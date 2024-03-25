@@ -21,11 +21,6 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: "Prepare Assets"
-        run: |
-          npm ci
-          npm run build
-
       - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
@@ -33,18 +28,23 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
           coverage: none
 
-      - name: "Install Dependencies"
-        run: composer install -n --prefer-dist
-
       - name: "Prepare Application"
         run: |
           cp .env.example .env
           touch ./database/database.sqlite
+          composer install -n --prefer-dist
           php artisan key:generate
           php artisan migrate
 
+      - name: "Prepare Assets"
+        run: |
+          npm ci
+          npm run build
+
       - name: "Run Application Tests"
-        run: php artisan test
+        run: |
+          php artisan test
+
 
   phpstan:
     name: "PHPStan"
