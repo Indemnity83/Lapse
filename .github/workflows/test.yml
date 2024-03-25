@@ -1,0 +1,52 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+  pull_request:
+
+jobs:
+  pest:
+    name: "Pest"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: "Install Dependencies"
+        run: composer install -n --prefer-dist
+
+      - name: "Prepare Application"
+        run: |
+          cp .env.example .env
+          php artisan cache:clear && php artisan key:generate
+
+      - name: "Run Pest Tests"
+        run: php artisan test
+
+  phpstan:
+    name: "PHPStan"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: "Install Dependencies"
+        run: composer install -n --prefer-dist
+
+      - name: "Run Static Analysis"
+        run: ./vendor/bin/phpstan --error-format=github
