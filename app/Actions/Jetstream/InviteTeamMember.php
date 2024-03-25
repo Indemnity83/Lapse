@@ -21,7 +21,7 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Invite a new team member to the given team.
      */
-    public function invite(User $user, Team $team, string $email, string $role = null): void
+    public function invite(User $user, Team $team, string $email, ?string $role = null): void
     {
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
@@ -29,6 +29,7 @@ class InviteTeamMember implements InvitesTeamMembers
 
         InvitingTeamMember::dispatch($team, $email, $role);
 
+        /** @var \App\Models\TeamInvitation $invitation */
         $invitation = $team->teamInvitations()->create([
             'email' => $email,
             'role' => $role,
