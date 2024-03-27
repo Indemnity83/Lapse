@@ -54,4 +54,4 @@ jobs:
     name: "Apply Labels"
     runs-on: ubuntu-latest
     steps:
-      - uses: TimonVS/pr-labeler-action@v4
+      - uses: TimonVS/pr-labeler-action@v5
