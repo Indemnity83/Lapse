@@ -4,13 +4,14 @@ namespace App\Jobs;
 
 use App\Models\Camera;
 use App\Models\Lapse;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class StoreCurrentImage implements ShouldQueue
 {
@@ -22,14 +23,26 @@ class StoreCurrentImage implements ShouldQueue
     ) {
     }
 
+    /**
+     * @throws FileCannotBeAdded
+     * @throws FileIsTooBig
+     * @throws FileDoesNotExist
+     */
     public function handle(): void
     {
-        try {
-            $snapshot = $this->camera->createSnapshot();
-            $this->lapse?->snapshots()->save($snapshot);
-        } catch (Exception $exception) {
-            Log::error($exception);
-            $this->release(5);
+        $formattedDate = now()->format('Y-m-d-His');
+        $name = "camera-{$this->camera->id}-{$formattedDate}";
+
+        $snapshot = $this->camera
+            ->addMediaFromUrl($this->camera->url)
+            ->usingName($name)
+            ->toMediaCollection(config('media.snapshots'));
+
+        if ($this->lapse) {
+            $snapshot
+                ->setCustomProperty('lapse_id', $this->lapse->id)
+                ->save();
         }
+
     }
 }

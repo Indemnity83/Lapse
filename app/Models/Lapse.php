@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Jobs\StoreCurrentImage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -18,7 +20,7 @@ use Illuminate\Support\Collection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Collection<Camera> $cameras
- * @property-read Collection<Snapshot> $snapshots
+ * @property-read MediaCollection $snapshots
  *
  * @method static Builder dueForSnapshot()
  */
@@ -40,11 +42,6 @@ class Lapse extends Model
         return $this->belongsToMany(Camera::class);
     }
 
-    public function snapshots(): HasMany
-    {
-        return $this->hasMany(Snapshot::class);
-    }
-
     public function scopeDueForSnapshot($query)
     {
         $intervalInSeconds = $this->interval * 60;
@@ -64,5 +61,15 @@ class Lapse extends Model
 
         $this->last_snapshot_at = now();
         $this->save();
+    }
+
+    protected function snapshots(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => new MediaCollection(Media::query()
+                ->where('collection_name', config('media.snapshots'))
+                ->where('custom_properties->lapse_id', $this->id)
+                ->get())
+        );
     }
 }
