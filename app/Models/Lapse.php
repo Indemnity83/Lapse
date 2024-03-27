@@ -44,14 +44,12 @@ class Lapse extends Model
 
     public function scopeDueForSnapshot($query)
     {
-        $intervalInSeconds = $this->interval * 60;
-
         return $query
             ->where('is_paused', false)
-            ->where(function ($query) use ($intervalInSeconds) {
+            ->where(function ($query) {
                 $query
                     ->whereNull('last_snapshot_at')
-                    ->orWhereRaw("strftime('%s', 'now') - strftime('%s', last_snapshot_at) > {$intervalInSeconds}");
+                    ->orWhereRaw("strftime('%s', 'now') - strftime('%s', last_snapshot_at) > interval * 60");
             });
     }
 
