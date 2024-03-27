@@ -85,23 +85,11 @@ class Camera extends Model
             'camera',
             $this->id,
             now()->format('Y-m-d-His'),
-        ], '-').".{$extension}";
+        ], '-') . ".{$extension}";
 
         return $this->snapshots()->create([
             'path' => Storage::disk('public')->putFileAs('snapshots', $temporaryFile, $name),
         ]);
-    }
-
-    private function getTempFile(string $url): string
-    {
-        $temporaryFile = tempnam(sys_get_temp_dir(), 'media-library');
-
-        Http::withUserAgent(config('app.name'))
-            ->throw(fn () => throw new Exception('Failed to download image: '.$url))
-            ->sink($temporaryFile)
-            ->get($url);
-
-        return $temporaryFile;
     }
 
     /**
@@ -117,12 +105,24 @@ class Camera extends Model
 
         $validation = Validator::make(
             ['file' => new File($file)],
-            ['file' => 'mimetypes:'.implode(',', $allowedMimeTypes)]
+            ['file' => 'mimetypes:' . implode(',', $allowedMimeTypes)]
         );
 
         if ($validation->fails()) {
             //            throw MimeTypeNotAllowed::create($file, $allowedMimeTypes);
             throw new Exception('Invalid mime type');
         }
+    }
+
+    private function getTempFile(string $url): string
+    {
+        $temporaryFile = tempnam(sys_get_temp_dir(), 'media-library');
+
+        Http::withUserAgent(config('app.name'))
+            ->throw(fn () => throw new Exception('Failed to download image: ' . $url))
+            ->sink($temporaryFile)
+            ->get($url);
+
+        return $temporaryFile;
     }
 }

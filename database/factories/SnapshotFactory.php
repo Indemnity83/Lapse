@@ -22,7 +22,7 @@ class SnapshotFactory extends Factory
         return [
             'lapse_id' => Lapse::factory(),
             'camera_id' => Camera::factory(),
-            'path' => fake()->md5.'.jpg',
+            'path' => fake()->md5 . '.jpg',
         ];
     }
 }
