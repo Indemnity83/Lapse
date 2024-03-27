@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\File;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -20,10 +20,10 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property string $name
  * @property string $url
- * @property DateTime $created_at
- * @property DateTime $updated_at
- * @property Collection<Lapse> $lapses
- * @property Collection<Snapshot> $snapshots
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read Collection<Lapse> $lapses
+ * @property-read Collection<Snapshot> $snapshots
  */
 class Camera extends Model
 {

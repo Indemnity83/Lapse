@@ -12,10 +12,13 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 /**
+ * @property int $id
  * @property int $interval
- * @property string $name
  * @property Carbon $last_snapshot_at
- * @property Collection<Camera> $cameras
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read Collection<Camera> $cameras
+ * @property-read Collection<Snapshot> $snapshots
  *
  * @method static Builder dueForSnapshot()
  */
