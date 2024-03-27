@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Queue Connection Name
+    | Default Queue Driver Name
     |--------------------------------------------------------------------------
     |
     | Laravel's queue supports a variety of backends via a single, unified

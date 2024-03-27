@@ -64,7 +64,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Session Database Connection
+    | Session Database Driver
     |--------------------------------------------------------------------------
     |
     | When using the "database" or "redis" session drivers, you may specify a
