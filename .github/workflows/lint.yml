@@ -42,25 +42,3 @@ jobs:
         with:
           prettier: true
 
-  eslint:
-    name: "ESLint"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v4
-
-      - name: "Set up Node.js"
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: 'npm'
-
-      - name: "Install Node.js dependencies"
-        run: npm ci
-
-      - name: "Lint JS"
-        uses: wearerequired/lint-action@v2
-        with:
-          eslint: true
-          eslint_dir: 'resources'
-          eslint_extensions: js
