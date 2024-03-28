@@ -11,7 +11,7 @@
         "@commitlint/cli": "^19.2.1",
         "@commitlint/config-conventional": "^19.1.0",
         "@tailwindcss/forms": "^0.5.7",
-        "@tailwindcss/typography": "^0.5.11",
+        "@tailwindcss/typography": "^0.5.12",
         "autoprefixer": "^10.4.16",
         "axios": "^1.6.4",
         "git-branch-is": "^4.0.0",
