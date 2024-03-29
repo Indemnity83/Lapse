@@ -15,6 +15,10 @@ class CameraManager extends Component
 
     public ?Camera $cameraBeingRemoved;
 
+    public bool $previewingCamera = false;
+
+    public ?Camera $cameraBeingPreviewed;
+
     public array $addCameraForm = [
         'name' => '',
         'url' => '',
@@ -42,6 +46,13 @@ class CameraManager extends Component
         $this->cameras = Camera::all();
 
         $this->dispatch('saved');
+    }
+
+    public function previewCamera($cameraId): void
+    {
+        $this->previewingCamera = true;
+
+        $this->cameraBeingPreviewed = Camera::findOrFail($cameraId);
     }
 
     public function confirmCameraRemoval($cameraId): void

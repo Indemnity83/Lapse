@@ -74,11 +74,35 @@
                         @foreach ($cameras->sortBy("name") as $camera)
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    <img
-                                        class="aspect-video h-14 border border-gray-300 object-cover sm:rounded-md dark:border-gray-700 dark:bg-gray-900"
-                                        src="{{ $camera->thumb_url }}"
-                                        alt="{{ $camera->name }}"
-                                    />
+                                    <button
+                                        class="relative cursor-pointer"
+                                        wire:click="previewCamera('{{ $camera->id }}')"
+                                    >
+                                        <img
+                                            wire:poll
+                                            class="aspect-video h-14 border border-gray-300 object-cover sm:rounded-md dark:border-gray-700 dark:bg-gray-900"
+                                            src="{{ $camera->url . "?timestamp=" . time() }}"
+                                            alt="{{ $camera->name }}"
+                                        />
+                                        <div
+                                            class="absolute inset-0 z-10 flex aspect-video h-14 items-center justify-center overflow-hidden bg-white text-black opacity-0 duration-300 hover:opacity-60"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke-width="1.5"
+                                                stroke="currentColor"
+                                                class="h-8 w-8"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6"
+                                                />
+                                            </svg>
+                                        </div>
+                                    </button>
                                     <div class="ms-4 flex flex-col">
                                         <div class="dark:text-white">
                                             {{ $camera->name }}
@@ -142,4 +166,13 @@
             </x-danger-button>
         </x-slot>
     </x-confirmation-modal>
+
+    <!-- Camera Preview Modal -->
+    <x-modal maxWidth="7xl" wire:model.live="previewingCamera">
+        <img
+            wire:poll
+            class="aspect-video border border-gray-300 object-cover sm:rounded-md dark:border-gray-700 dark:bg-gray-900"
+            src="{{ $cameraBeingPreviewed?->url . "?timestamp=" . time() }}"
+        />
+    </x-modal>
 </div>
