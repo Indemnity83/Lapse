@@ -11,6 +11,7 @@ use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -18,6 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property string $url
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property-read string $thumb_url
  * @property-read Collection<Lapse> $lapses
  * @property-read MediaCollection $snapshots
  */
@@ -43,10 +45,25 @@ class Camera extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg', 'image/png']);
     }
 
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(200)
+            ->height(200)
+            ->sharpen(10);
+    }
+
     protected function snapshots(): Attribute
     {
         return Attribute::make(
             get: fn () => $this->getMedia(config('media.snapshots'))
+        );
+    }
+
+    protected function thumbUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getMedia(config('media.snapshots'))->last()?->getUrl('thumb') ?? ''
         );
     }
 }

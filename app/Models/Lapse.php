@@ -61,6 +61,18 @@ class Lapse extends Model
         $this->save();
     }
 
+    public function pause(): void
+    {
+        $this->is_paused = true;
+        $this->save();
+    }
+
+    public function run(): void
+    {
+        $this->is_paused = false;
+        $this->save();
+    }
+
     protected function snapshots(): Attribute
     {
         return Attribute::make(

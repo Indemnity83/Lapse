@@ -7,13 +7,17 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div
-                class="overflow-hidden bg-white shadow-xl sm:rounded-lg dark:bg-gray-800"
-            >
-                <x-welcome />
-            </div>
+    <div>
+        <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
+            @livewire("dashboard.statistics")
+
+            <x-section-border />
+
+            @livewire("dashboard.lapse-manager")
+
+            <x-section-border />
+
+            @livewire("dashboard.camera-manager")
         </div>
     </div>
 </x-app-layout>
