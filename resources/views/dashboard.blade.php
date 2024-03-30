@@ -13,6 +13,10 @@
 
             <x-section-border />
 
+            @livewire("dashboard.lapse-manager")
+
+            <x-section-border />
+
             @livewire("dashboard.camera-manager")
         </div>
     </div>
