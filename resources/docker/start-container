@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Since the /app/storage directory is likely mapped to the host, we need to
+# re-create the directory structure on run, or the application will fail
+# to load correctly. All the instance files will stored in this path.
+mkdir -p /app/storage/app/public
+mkdir -p /app/storage/framework/cache/data
+mkdir -p /app/storage/framework/sessions
+mkdir -p /app/storage/framework/testing
+mkdir -p /app/storage/framework/views
+mkdir -p /app/storage/logs
+
+php artisan migrate --force
+
+exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
