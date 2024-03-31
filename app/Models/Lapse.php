@@ -30,11 +30,13 @@ class Lapse extends Model
 
     protected $casts = [
         'last_snapshot_at' => 'datetime',
+        'is_paused' => 'bool',
     ];
 
     protected $fillable = [
         'name',
         'interval',
+        'is_paused',
     ];
 
     public function cameras(): BelongsToMany
