@@ -7,6 +7,7 @@ use App\Models\Lapse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LapseManager extends Component
 {
@@ -17,6 +18,8 @@ class LapseManager extends Component
     public bool $confirmingLapseRemoval = false;
 
     public ?Lapse $lapseBeingRemoved;
+
+    public bool $clearMediaOnDelete = true;
 
     public array $addLapseForm = [
         'name' => '',
@@ -62,6 +65,7 @@ class LapseManager extends Component
 
         $this->cameras = $this->cameras->map(function ($camera) {
             $camera['enabled'] = false;
+
             return $camera;
         });
 
@@ -93,11 +97,17 @@ class LapseManager extends Component
 
     public function removeLapse(): void
     {
-        $this->lapseBeingRemoved->delete();
+        if ($this->clearMediaOnDelete) {
+            $snapshots = $this->lapseBeingRemoved->snapshots;
+            $this->lapseBeingRemoved->delete();
+            $snapshots->each(fn (Media $media) => $media->delete());
+        } else {
+            $this->lapseBeingRemoved->delete();
+        }
 
         $this->confirmingLapseRemoval = false;
-
         $this->lapseBeingRemoved = null;
+        $this->clearMediaOnDelete = true;
 
         $this->lapses = Lapse::all();
     }
