@@ -42,20 +42,22 @@
                     class="col-span-6 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-3"
                 >
                     @foreach ($cameras as $camera)
-                        <div class="mb-2 flex items-center">
-                            <button
-                                wire:click="toggleCamera('{{ $camera["id"] }}')"
-                                type="button"
+                        <button
+                            class="mb-2 flex items-center"
+                            type="button"
+                            wire:click="toggleCamera('{{ $camera["id"] }}')"
+                            role="switch"
+                            aria-checked="{{ $camera["enabled"] }}"
+                            aria-labelledby="{{ $camera["name"] }}"
+                        >
+                            <div
                                 class="{{ $camera["enabled"] ? "bg-indigo-600" : "bg-gray-200" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                                role="switch"
-                                aria-checked="false"
-                                aria-labelledby="annual-billing-label"
                             >
                                 <span
                                     aria-hidden="true"
                                     class="{{ $camera["enabled"] ? "translate-x-5" : "translate-x-0" }} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
                                 ></span>
-                            </button>
+                            </div>
                             <span
                                 class="ml-3 text-sm"
                                 id="annual-billing-label"
@@ -64,7 +66,7 @@
                                     {{ $camera["name"] }}
                                 </span>
                             </span>
-                        </div>
+                        </button>
                     @endforeach
                 </div>
             </x-slot>
