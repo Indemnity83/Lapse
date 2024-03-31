@@ -8,9 +8,14 @@ RUN npm install && npm run build
 FROM php:8.2-fpm-alpine
 
 # Setup the container
-RUN apk add --no-cache supervisor icu-dev
-RUN docker-php-ext-configure intl &&  \
-    docker-php-ext-install exif intl
+RUN apk add --no-cache icu-dev libjpeg-turbo-dev libpng-dev libwebp-dev libzip-dev \
+    && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && docker-php-ext-configure gd --with-jpeg --with-webp \
+    && docker-php-ext-install -j "$(nproc)" bcmath exif gd intl mysqli zip \
+    && apk del .build-deps
+
+# Set up supervisor
+RUN apk add --no-cache supervisor
 COPY resources/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY resources/docker/start-container /usr/local/bin/start-container
 RUN chmod +x /usr/local/bin/start-container
