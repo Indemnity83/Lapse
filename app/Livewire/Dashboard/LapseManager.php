@@ -60,6 +60,11 @@ class LapseManager extends Component
             'interval' => 5,
         ];
 
+        $this->cameras = $this->cameras->map(function ($camera) {
+            $camera['enabled'] = false;
+            return $camera;
+        });
+
         $this->lapses = Lapse::all();
 
         $this->dispatch('saved');
