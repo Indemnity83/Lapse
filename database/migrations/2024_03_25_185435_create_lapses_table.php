@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('interval');
             $table->datetime('last_snapshot_at')->nullable();
-            $table->boolean('is_paused')->default(false);
+            $table->boolean('is_paused')->default(true);
             $table->timestamps();
         });
     }
