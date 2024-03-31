@@ -28,9 +28,22 @@ class LapseManager extends Component
 
     public $lapseCameras = [];
 
+    protected $listeners = [
+        'cameraAdded',
+    ];
+
     public function mount(): void
     {
         $this->resetFormData();
+    }
+
+    public function cameraAdded(): void
+    {
+        $this->cameras = Camera::all()->map(fn (Camera $camera) => [
+            'id' => $camera->id,
+            'name' => $camera->name,
+            'enabled' => false,
+        ]);
     }
 
     public function toggleCamera($cameraId): void
