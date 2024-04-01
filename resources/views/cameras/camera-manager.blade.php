@@ -105,7 +105,11 @@
                                     </button>
                                     <div class="ms-4 flex flex-col">
                                         <div class="dark:text-white">
-                                            {{ $camera->name }}
+                                            <a
+                                                href="{{ route("cameras.show", $camera) }}"
+                                            >
+                                                {{ $camera->name }}
+                                            </a>
                                         </div>
                                         <div
                                             class="text-xs text-gray-400 dark:text-gray-300"
@@ -114,15 +118,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="flex items-center">
-                                    <button
-                                        class="ms-6 cursor-pointer text-sm text-red-500"
-                                        wire:click="confirmCameraRemoval('{{ $camera->id }}')"
-                                    >
-                                        {{ __("Remove") }}
-                                    </button>
-                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -130,42 +125,6 @@
             </x-action-section>
         </div>
     @endif
-
-    <!-- Remove Camera Confirmation Modal -->
-    <x-confirmation-modal wire:model.live="confirmingCameraRemoval">
-        <x-slot name="title">
-            {{ __("Are you absolutely sure?") }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div class="prose-sm dark:prose-invert">
-                <p>
-                    {{ __('Unexpected bad things will happen if you don\'t read this!') }}
-                </p>
-                <p>
-                    {{ __("This action cannot be undone.") }}
-                    {{ __("This will permanently delete the :name camera, and remove all of its snapshots.", ["name" => $cameraBeingRemoved?->name]) }}
-                </p>
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-secondary-button
-                wire:click="$toggle('confirmingCameraRemoval')"
-                wire:loading.attr="disabled"
-            >
-                {{ __("Cancel") }}
-            </x-secondary-button>
-
-            <x-danger-button
-                class="ms-3"
-                wire:click="removeCamera"
-                wire:loading.attr="disabled"
-            >
-                {{ __("Remove") }}
-            </x-danger-button>
-        </x-slot>
-    </x-confirmation-modal>
 
     <!-- Camera Preview Modal -->
     <x-modal maxWidth="7xl" wire:model.live="previewingCamera">

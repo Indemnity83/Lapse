@@ -66,4 +66,19 @@ class Camera extends Model implements HasMedia
             get: fn () => $this->getMedia(config('media.snapshots'))->last()?->getUrl('thumb') ?? ''
         );
     }
+
+    protected function lastSnapshotAt(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->getMedia(config('media.snapshots'))->last()?->created_at;
+                $timestamp = $this->getMedia(config('media.snapshots'))->last()?->created_at;
+                if ($timestamp != null) {
+                    return $timestamp->diffInSeconds() < 60 ? __('just now') : $timestamp->diffForHumans();
+                }
+
+                return null;
+            }
+        );
+    }
 }

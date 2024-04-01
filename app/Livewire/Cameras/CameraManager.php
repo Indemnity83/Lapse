@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Dashboard;
+namespace App\Livewire\Cameras;
 
 use App\Models\Camera;
 use Illuminate\Support\Collection;
@@ -10,10 +10,6 @@ use Livewire\Component;
 class CameraManager extends Component
 {
     public Collection $cameras;
-
-    public bool $confirmingCameraRemoval = false;
-
-    public ?Camera $cameraBeingRemoved;
 
     public bool $previewingCamera = false;
 
@@ -56,26 +52,8 @@ class CameraManager extends Component
         $this->cameraBeingPreviewed = Camera::findOrFail($cameraId);
     }
 
-    public function confirmCameraRemoval($cameraId): void
-    {
-        $this->confirmingCameraRemoval = true;
-
-        $this->cameraBeingRemoved = Camera::findOrFail($cameraId);
-    }
-
-    public function removeCamera(): void
-    {
-        $this->cameraBeingRemoved->delete();
-
-        $this->confirmingCameraRemoval = false;
-
-        $this->cameraBeingRemoved = null;
-
-        $this->cameras = Camera::all();
-    }
-
     public function render(): View
     {
-        return view('dashboard.camera-manager');
+        return view('cameras.camera-manager');
     }
 }
