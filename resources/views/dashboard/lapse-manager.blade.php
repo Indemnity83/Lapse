@@ -42,29 +42,31 @@
                     class="col-span-6 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-3"
                 >
                     @foreach ($cameras as $camera)
-                        <div class="mb-2 flex items-center">
-                            <button
-                                wire:click="toggleCamera('{{ $camera["id"] }}')"
-                                type="button"
+                        <button
+                            class="mb-2 flex items-center"
+                            type="button"
+                            wire:click="toggleCamera('{{ $camera["id"] }}')"
+                            role="switch"
+                            aria-checked="{{ $camera["enabled"] }}"
+                            aria-labelledby="camera-{{ $camera["id"] }}-toggle"
+                        >
+                            <div
                                 class="{{ $camera["enabled"] ? "bg-indigo-600" : "bg-gray-200" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                                role="switch"
-                                aria-checked="false"
-                                aria-labelledby="annual-billing-label"
                             >
                                 <span
                                     aria-hidden="true"
                                     class="{{ $camera["enabled"] ? "translate-x-5" : "translate-x-0" }} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
                                 ></span>
-                            </button>
+                            </div>
                             <span
                                 class="ml-3 text-sm"
-                                id="annual-billing-label"
+                                id="camera-{{ $camera["id"] }}-toggle"
                             >
                                 <span class="font-medium text-gray-900">
                                     {{ $camera["name"] }}
                                 </span>
                             </span>
-                        </div>
+                        </button>
                     @endforeach
                 </div>
             </x-slot>
@@ -183,6 +185,28 @@
                     {{ __("This action cannot be undone.") }}
                     {{ __("This will permanently delete the :name timelapse, and all of the related snapshots will no longer be grouped together.", ["name" => $lapseBeingRemoved?->name]) }}
                 </p>
+                <button
+                    class="mb-2 flex items-center"
+                    type="button"
+                    wire:click="$toggle('clearMediaOnDelete')"
+                    role="switch"
+                    aria-checked="{{ $clearMediaOnDelete }}"
+                    aria-labelledby="remove-media-toggle"
+                >
+                    <div
+                        class="{{ $clearMediaOnDelete ? "bg-red-600" : "bg-gray-200" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+                    >
+                        <span
+                            aria-hidden="true"
+                            class="{{ $clearMediaOnDelete ? "translate-x-5" : "translate-x-0" }} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
+                        ></span>
+                    </div>
+                    <span class="ml-3 text-sm" id="remove-media-toggle">
+                        <span class="font-medium text-gray-900">
+                            remove the snapshots from the file system
+                        </span>
+                    </span>
+                </button>
             </div>
         </x-slot>
 

@@ -33,7 +33,7 @@ class CameraManager extends Component
     {
         $this->resetErrorBag();
 
-        Camera::create([
+        $camera = Camera::create([
             'name' => $this->addCameraForm['name'],
             'url' => $this->addCameraForm['url'],
         ]);
@@ -45,6 +45,7 @@ class CameraManager extends Component
 
         $this->cameras = Camera::all();
 
+        $this->dispatch('cameraAdded');
         $this->dispatch('saved');
     }
 

@@ -7,6 +7,7 @@ use App\Models\Lapse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LapseManager extends Component
 {
@@ -18,6 +19,8 @@ class LapseManager extends Component
 
     public ?Lapse $lapseBeingRemoved;
 
+    public bool $clearMediaOnDelete = true;
+
     public array $addLapseForm = [
         'name' => '',
         'interval' => 5,
@@ -25,9 +28,22 @@ class LapseManager extends Component
 
     public $lapseCameras = [];
 
+    protected $listeners = [
+        'cameraAdded',
+    ];
+
     public function mount(): void
     {
         $this->resetFormData();
+    }
+
+    public function cameraAdded(): void
+    {
+        $this->cameras = Camera::all()->map(fn (Camera $camera) => [
+            'id' => $camera->id,
+            'name' => $camera->name,
+            'enabled' => false,
+        ]);
     }
 
     public function toggleCamera($cameraId): void
@@ -60,6 +76,12 @@ class LapseManager extends Component
             'interval' => 5,
         ];
 
+        $this->cameras = $this->cameras->map(function ($camera) {
+            $camera['enabled'] = false;
+
+            return $camera;
+        });
+
         $this->lapses = Lapse::all();
 
         $this->dispatch('saved');
@@ -88,11 +110,17 @@ class LapseManager extends Component
 
     public function removeLapse(): void
     {
-        $this->lapseBeingRemoved->delete();
+        if ($this->clearMediaOnDelete) {
+            $snapshots = $this->lapseBeingRemoved->snapshots;
+            $this->lapseBeingRemoved->delete();
+            $snapshots->each(fn (Media $media) => $media->delete());
+        } else {
+            $this->lapseBeingRemoved->delete();
+        }
 
         $this->confirmingLapseRemoval = false;
-
         $this->lapseBeingRemoved = null;
+        $this->clearMediaOnDelete = true;
 
         $this->lapses = Lapse::all();
     }
