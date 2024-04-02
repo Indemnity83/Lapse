@@ -65,7 +65,7 @@ class CaptureSnapshot implements ShouldQueue
             'image/png' => 'png',
         ];
 
-        $type = get_headers($this->camera->url, 1)['Content-Type'];
+        $type = get_headers($this->camera->url, true)['Content-Type'];
 
         if (Arr::has($extensions, $type)) {
             return Arr::get($extensions, $type);
