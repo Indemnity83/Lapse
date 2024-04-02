@@ -34,7 +34,8 @@ class CaptureSnapshot implements ShouldQueue
             ->addMediaFromUrl($this->camera->url)
             ->usingName($this->getFilename())
             ->toMediaCollection(config('media.snapshots'))
-            ->setCustomProperty('lapse_id', $this->lapse->id);
+            ->setCustomProperty('lapse_id', $this->lapse->id)
+            ->save();
     }
 
     protected function getFilename(): string
