@@ -13,4 +13,6 @@ test('team names can be updated', function () {
 
     expect($user->fresh()->ownedTeams)->toHaveCount(1);
     expect($user->currentTeam->fresh()->name)->toEqual('Test Team');
-});
+})->skip(function () {
+    return ! \Laravel\Jetstream\Features::hasTeamFeatures();
+}, 'Team support is not enabled.');

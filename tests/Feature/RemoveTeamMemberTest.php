@@ -16,7 +16,9 @@ test('team members can be removed from teams', function () {
         ->call('removeTeamMember');
 
     expect($user->currentTeam->fresh()->users)->toHaveCount(0);
-});
+})->skip(function () {
+    return ! \Laravel\Jetstream\Features::hasTeamFeatures();
+}, 'Team support is not enabled.');
 
 test('only team owner can remove team members', function () {
     $user = User::factory()->withPersonalTeam()->create();
@@ -31,4 +33,6 @@ test('only team owner can remove team members', function () {
         ->set('teamMemberIdBeingRemoved', $user->id)
         ->call('removeTeamMember')
         ->assertStatus(403);
-});
+})->skip(function () {
+    return ! \Laravel\Jetstream\Features::hasTeamFeatures();
+}, 'Team support is not enabled.');
