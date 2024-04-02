@@ -19,7 +19,9 @@ test('team member roles can be updated', function () {
     expect($otherUser->fresh()->hasTeamRole(
         $user->currentTeam->fresh(), 'editor'
     ))->toBeTrue();
-});
+})->skip(function () {
+    return ! \Laravel\Jetstream\Features::hasTeamFeatures();
+}, 'Team support is not enabled.');
 
 test('only team owner can update team member roles', function () {
     $user = User::factory()->withPersonalTeam()->create();
@@ -39,4 +41,6 @@ test('only team owner can update team member roles', function () {
     expect($otherUser->fresh()->hasTeamRole(
         $user->currentTeam->fresh(), 'admin'
     ))->toBeTrue();
-});
+})->skip(function () {
+    return ! \Laravel\Jetstream\Features::hasTeamFeatures();
+}, 'Team support is not enabled.');

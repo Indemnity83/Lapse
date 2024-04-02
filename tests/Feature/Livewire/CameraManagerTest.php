@@ -1,6 +1,6 @@
 <?php
 
-use App\Livewire\Dashboard\CameraManager;
+use App\Livewire\Cameras\CameraManager;
 use Livewire\Livewire;
 
 it('renders successfully', function () {

@@ -53,6 +53,14 @@ class Camera extends Model implements HasMedia
             ->sharpen(10);
     }
 
+    public function snapshotsFor(Lapse $lapse): MediaCollection
+    {
+        return new MediaCollection($this->media()
+            ->where('collection_name', config('media.snapshots'))
+            ->where('custom_properties->lapse_id', $lapse->id)
+            ->get());
+    }
+
     protected function snapshots(): Attribute
     {
         return Attribute::make(
@@ -64,6 +72,15 @@ class Camera extends Model implements HasMedia
     {
         return Attribute::make(
             get: fn () => $this->getMedia(config('media.snapshots'))->last()?->getUrl('thumb') ?? ''
+        );
+    }
+
+    protected function lastSnapshotAt(): Attribute
+    {
+        return Attribute::make(
+            get: function () {
+                return $this->getMedia(config('media.snapshots'))->last()?->created_at;
+            }
         );
     }
 }

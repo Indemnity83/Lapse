@@ -42,31 +42,13 @@
                     class="col-span-6 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-3"
                 >
                     @foreach ($cameras as $camera)
-                        <button
-                            class="mb-2 flex items-center"
-                            type="button"
-                            wire:click="toggleCamera('{{ $camera["id"] }}')"
-                            role="switch"
-                            aria-checked="{{ $camera["enabled"] }}"
-                            aria-labelledby="camera-{{ $camera["id"] }}-toggle"
+                        <x-toggle
+                            id="cam-{{ $camera['id'] }}"
+                            checked="{{ $camera['enabled'] }}"
+                            wire:click="toggleCamera({{ $camera['id'] }})"
                         >
-                            <div
-                                class="{{ $camera["enabled"] ? "bg-indigo-600" : "bg-gray-200" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                            >
-                                <span
-                                    aria-hidden="true"
-                                    class="{{ $camera["enabled"] ? "translate-x-5" : "translate-x-0" }} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                                ></span>
-                            </div>
-                            <span
-                                class="ml-3 text-sm"
-                                id="camera-{{ $camera["id"] }}-toggle"
-                            >
-                                <span class="font-medium text-gray-900">
-                                    {{ $camera["name"] }}
-                                </span>
-                            </span>
-                        </button>
+                            {{ $camera["name"] }}
+                        </x-toggle>
                     @endforeach
                 </div>
             </x-slot>
@@ -105,7 +87,11 @@
                                     <div class="flex items-center">
                                         <div class="ms-4 flex flex-col">
                                             <div class="dark:text-white">
-                                                {{ $lapse->name }}
+                                                <a
+                                                    href="{{ route("lapses.show", $lapse) }}"
+                                                >
+                                                    {{ $lapse->name }}
+                                                </a>
                                             </div>
                                             <div>
                                                 @if ($lapse->is_paused)
@@ -137,31 +123,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="flex items-center">
-                                    @if ($lapse->is_paused)
-                                        <button
-                                            class="ms-2 text-sm text-indigo-600 underline dark:text-indigo-400"
-                                            wire:click="runLapse('{{ $lapse->id }}')"
-                                        >
-                                            {{ __("Run") }}
-                                        </button>
-                                    @else
-                                        <button
-                                            class="ms-2 text-sm text-gray-400 underline"
-                                            wire:click="pauseLapse('{{ $lapse->id }}')"
-                                        >
-                                            {{ __("Pause") }}
-                                        </button>
-                                    @endif
-
-                                    <button
-                                        class="ms-6 cursor-pointer text-sm text-red-500"
-                                        wire:click="confirmLapseRemoval('{{ $lapse->id }}')"
-                                    >
-                                        {{ __("Remove") }}
-                                    </button>
-                                </div>
                             </div>
                         @endforeach
                     </div>
@@ -169,62 +130,4 @@
             </x-action-section>
         </div>
     @endif
-
-    <!-- Remove Lapse Confirmation Modal -->
-    <x-confirmation-modal wire:model.live="confirmingLapseRemoval">
-        <x-slot name="title">
-            {{ __("Are you absolutely sure?") }}
-        </x-slot>
-
-        <x-slot name="content">
-            <div class="prose-sm dark:prose-invert">
-                <p>
-                    {{ __('Unexpected bad things will happen if you don\'t read this!') }}
-                </p>
-                <p>
-                    {{ __("This action cannot be undone.") }}
-                    {{ __("This will permanently delete the :name timelapse, and all of the related snapshots will no longer be grouped together.", ["name" => $lapseBeingRemoved?->name]) }}
-                </p>
-                <button
-                    class="mb-2 flex items-center"
-                    type="button"
-                    wire:click="$toggle('clearMediaOnDelete')"
-                    role="switch"
-                    aria-checked="{{ $clearMediaOnDelete }}"
-                    aria-labelledby="remove-media-toggle"
-                >
-                    <div
-                        class="{{ $clearMediaOnDelete ? "bg-red-600" : "bg-gray-200" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
-                    >
-                        <span
-                            aria-hidden="true"
-                            class="{{ $clearMediaOnDelete ? "translate-x-5" : "translate-x-0" }} pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out"
-                        ></span>
-                    </div>
-                    <span class="ml-3 text-sm" id="remove-media-toggle">
-                        <span class="font-medium text-gray-900">
-                            remove the snapshots from the file system
-                        </span>
-                    </span>
-                </button>
-            </div>
-        </x-slot>
-
-        <x-slot name="footer">
-            <x-secondary-button
-                wire:click="$toggle('confirmingLapseRemoval')"
-                wire:loading.attr="disabled"
-            >
-                {{ __("Cancel") }}
-            </x-secondary-button>
-
-            <x-danger-button
-                class="ms-3"
-                wire:click="removeLapse"
-                wire:loading.attr="disabled"
-            >
-                {{ __("Remove") }}
-            </x-danger-button>
-        </x-slot>
-    </x-confirmation-modal>
 </div>

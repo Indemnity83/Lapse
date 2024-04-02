@@ -1,25 +1,18 @@
 <?php
 
-namespace App\Livewire\Dashboard;
+namespace App\Livewire\Lapses;
 
 use App\Models\Camera;
 use App\Models\Lapse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class LapseManager extends Component
 {
     public Collection $lapses;
 
     public Collection $cameras;
-
-    public bool $confirmingLapseRemoval = false;
-
-    public ?Lapse $lapseBeingRemoved;
-
-    public bool $clearMediaOnDelete = true;
 
     public array $addLapseForm = [
         'name' => '',
@@ -87,50 +80,7 @@ class LapseManager extends Component
         $this->dispatch('saved');
     }
 
-    public function pauseLapse($lapseId): void
-    {
-        Lapse::findOrFail($lapseId)->pause();
-
-        $this->lapses = Lapse::all();
-    }
-
-    public function runLapse($lapseId): void
-    {
-        Lapse::findOrFail($lapseId)->run();
-
-        $this->lapses = Lapse::all();
-    }
-
-    public function confirmLapseRemoval($lapseId): void
-    {
-        $this->confirmingLapseRemoval = true;
-
-        $this->lapseBeingRemoved = Lapse::findOrFail($lapseId);
-    }
-
-    public function removeLapse(): void
-    {
-        if ($this->clearMediaOnDelete) {
-            $snapshots = $this->lapseBeingRemoved->snapshots;
-            $this->lapseBeingRemoved->delete();
-            $snapshots->each(fn (Media $media) => $media->delete());
-        } else {
-            $this->lapseBeingRemoved->delete();
-        }
-
-        $this->confirmingLapseRemoval = false;
-        $this->lapseBeingRemoved = null;
-        $this->clearMediaOnDelete = true;
-
-        $this->lapses = Lapse::all();
-    }
-
-    public function render(): View
-    {
-        return view('dashboard.lapse-manager');
-    }
-
-    protected function resetFormData(): void
+    public function resetFormData(): void
     {
         $this->lapses = Lapse::all();
         $this->cameras = Camera::all()->map(fn (Camera $camera) => [
@@ -138,5 +88,10 @@ class LapseManager extends Component
             'name' => $camera->name,
             'enabled' => false,
         ]);
+    }
+
+    public function render(): View
+    {
+        return view('lapses.lapse-manager');
     }
 }
