@@ -13,13 +13,13 @@ use Spatie\MediaLibrary\MediaCollections\Exceptions\FileCannotBeAdded;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
-class StoreCurrentImage implements ShouldQueue
+class CaptureSnapshot implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public function __construct(
         public Camera $camera,
-        public ?Lapse $lapse
+        public Lapse $lapse
     ) {
     }
 
@@ -30,19 +30,17 @@ class StoreCurrentImage implements ShouldQueue
      */
     public function handle(): void
     {
-        $formattedDate = now()->format('Y-m-d-His');
-        $name = "camera-{$this->camera->id}-{$formattedDate}";
-
-        $snapshot = $this->camera
+        $this->camera
             ->addMediaFromUrl($this->camera->url)
-            ->usingName($name)
-            ->toMediaCollection(config('media.snapshots'));
+            ->usingName($this->getFilename())
+            ->toMediaCollection(config('media.snapshots'))
+            ->setCustomProperty('lapse_id', $this->lapse->id);
+    }
 
-        if ($this->lapse) {
-            $snapshot
-                ->setCustomProperty('lapse_id', $this->lapse->id)
-                ->save();
-        }
+    protected function getFilename(): string
+    {
+        $formattedDate = now()->format('Y-m-d-His');
 
+        return "camera-{$this->camera->id}-{$formattedDate}";
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Lapses;
 
-use Illuminate\Support\Facades\DB;
+use App\Actions\Timelapses\DeleteLapse;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
@@ -32,7 +32,7 @@ class DeleteLapseForm extends Component
         $this->confirmingLapseDeletion = true;
     }
 
-    public function deleteLapse()
+    public function deleteLapse(DeleteLapse $deleteLapse)
     {
         $this->resetErrorBag();
 
@@ -42,17 +42,9 @@ class DeleteLapseForm extends Component
             ]);
         }
 
-        // TODO: move this into an action
-        DB::transaction(function () {
-            if ($this->clearMediaOnDelete) {
-                $this->lapse->snapshots->each->delete();
-            } else {
-                $this->lapse->snapshots->each->forgetCustomProperty('lapse_id');
-            }
-            $this->lapse->delete();
-        });
+        $deleteLapse->handle($this->lapse, $this->clearMediaOnDelete);
 
-        return redirect(route('lapses'));
+        return redirect(route('lapses.index'));
     }
 
     public function render()

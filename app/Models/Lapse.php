@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Jobs\StoreCurrentImage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +15,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 /**
  * @property int $id
  * @property int $interval
+ * @property bool $is_paused
  * @property Carbon $last_snapshot_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
@@ -53,26 +53,6 @@ class Lapse extends Model
                     ->whereNull('last_snapshot_at')
                     ->orWhereRaw("strftime('%s', 'now') - strftime('%s', last_snapshot_at) > interval * 60");
             });
-    }
-
-    public function snapshot(): void
-    {
-        $this->cameras->each(fn (Camera $camera) => StoreCurrentImage::dispatch($camera, $this));
-
-        $this->last_snapshot_at = now();
-        $this->save();
-    }
-
-    public function pause(): void
-    {
-        $this->is_paused = true;
-        $this->save();
-    }
-
-    public function run(): void
-    {
-        $this->is_paused = false;
-        $this->save();
     }
 
     protected function snapshots(): Attribute

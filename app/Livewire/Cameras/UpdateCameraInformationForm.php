@@ -2,9 +2,7 @@
 
 namespace App\Livewire\Cameras;
 
-use App\Models\Camera;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
+use App\Actions\Cameras\UpdateCameraInformation;
 use Livewire\Component;
 
 class UpdateCameraInformationForm extends Component
@@ -20,12 +18,11 @@ class UpdateCameraInformationForm extends Component
         $this->state = $camera->withoutRelations()->toArray();
     }
 
-    public function updateCameraInformation(): void
+    public function updateCameraInformation(UpdateCameraInformation $updateCameraInformation): void
     {
         $this->resetErrorBag();
 
-        // TODO: move this into an action
-        $this->update($this->camera, $this->state);
+        $updateCameraInformation->handle($this->camera, $this->state);
 
         $this->dispatch('saved');
     }
@@ -33,18 +30,5 @@ class UpdateCameraInformationForm extends Component
     public function render()
     {
         return view('cameras.update-camera-information-form');
-    }
-
-    protected function update(Camera $camera, array $input): void
-    {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255', Rule::unique('cameras')->ignore($camera->id)],
-            'url' => ['required', 'url', 'max:255'],
-        ])->validateWithBag('updateCameraInformation');
-
-        $camera->forceFill([
-            'name' => $input['name'],
-            'url' => $input['url'],
-        ])->save();
     }
 }
