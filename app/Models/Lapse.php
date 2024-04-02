@@ -44,6 +44,14 @@ class Lapse extends Model
         return $this->belongsToMany(Camera::class);
     }
 
+    /**
+     * This query scope will get all timelapses that are ready to have another
+     * snapshot taken. There is a bit of magic here, as we look for models
+     * where the last snapshot is older than the interval + 10 seconds.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
     public function scopeDueForSnapshot($query)
     {
         return $query
@@ -51,7 +59,7 @@ class Lapse extends Model
             ->where(function ($query) {
                 $query
                     ->whereNull('last_snapshot_at')
-                    ->orWhereRaw("strftime('%s', 'now') - strftime('%s', last_snapshot_at) > interval * 60");
+                    ->orWhereRaw("strftime('%s', 'now') - strftime('%s', last_snapshot_at) > interval * 60 - 10");
             });
     }
 
