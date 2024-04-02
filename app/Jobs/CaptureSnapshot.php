@@ -44,7 +44,7 @@ class CaptureSnapshot implements ShouldQueue
         $formattedDate = now()->format('Y-m-d-His');
         $ext = $this->parseExtension($this->camera->url);
 
-        return "camera-{$this->camera->id}-{$formattedDate}.$ext";
+        return "camera-{$this->camera->id}-{$formattedDate}.{$ext}";
     }
 
     protected function parseExtension(string $url): string
