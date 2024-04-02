@@ -14,12 +14,12 @@ class TimelapsePathGenerator implements PathGenerator
 
     public function getPathForConversions(Media $media): string
     {
-        return $this->getBasePath($media).'/conversions/'.$media->getKey().'/';
+        return $this->getBasePath($media).'/conversions/';
     }
 
     public function getPathForResponsiveImages(Media $media): string
     {
-        return $this->getBasePath($media).'/responsive-images/'.$media->getKey().'/';
+        return $this->getBasePath($media).'/responsive-images/';
     }
 
     protected function getBasePath(Media $media): string
