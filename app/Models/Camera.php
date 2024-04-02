@@ -53,6 +53,14 @@ class Camera extends Model implements HasMedia
             ->sharpen(10);
     }
 
+    public function snapshotsFor(Lapse $lapse): MediaCollection
+    {
+        return new MediaCollection($this->media()
+            ->where('collection_name', config('media.snapshots'))
+            ->where('custom_properties->lapse_id', $lapse->id)
+            ->get());
+    }
+
     protected function snapshots(): Attribute
     {
         return Attribute::make(

@@ -6,6 +6,7 @@ use App\Models\Camera;
 use App\Models\Lapse;
 use Illuminate\Support\Collection;
 use Livewire\Component;
+use Spatie\MediaLibrary\Support\MediaStream;
 
 class CameraForm extends Component
 {
@@ -13,9 +14,16 @@ class CameraForm extends Component
 
     public Collection $cameras;
 
+    public Collection $camerasWithSnapshots;
+
     public function mount(Lapse $lapse): void
     {
         $this->lapse = $lapse;
+        $this->camerasWithSnapshots = Camera::query()->whereHas('media', function ($query) {
+            $query
+                ->where('collection_name', config('media.snapshots'))
+                ->where('custom_properties->lapse_id', $this->lapse->id);
+        })->get();
 
         $this->cameras = Camera::all()->map(fn (Camera $camera) => [
             'id' => $camera->id,
@@ -39,6 +47,18 @@ class CameraForm extends Component
 
             return $camera;
         });
+    }
+
+    public function downloadZip($cameraId)
+    {
+        $snapshots = Camera::findOrFail($cameraId)->snapshotsFor($this->lapse);
+
+        return MediaStream::create('snapshots.zip')->addMedia($snapshots);
+    }
+
+    public function downloadMovie($cameraId)
+    {
+        // TODO: Implement movie
     }
 
     public function render()
