@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Cameras;
 
-use Illuminate\Support\Facades\DB;
+use App\Actions\Cameras\DeleteCamera;
 use Illuminate\Validation\ValidationException;
 use Livewire\Component;
 
@@ -30,7 +30,7 @@ class DeleteCameraForm extends Component
         $this->confirmingCameraDeletion = true;
     }
 
-    public function deleteCamera()
+    public function deleteCamera(DeleteCamera $deleteCamera)
     {
         $this->resetErrorBag();
 
@@ -40,13 +40,9 @@ class DeleteCameraForm extends Component
             ]);
         }
 
-        // TODO: move this into an action
-        DB::transaction(function () {
-            $this->camera->snapshots->each->delete();
-            $this->camera->delete();
-        });
+        $deleteCamera->handle($this->camera);
 
-        return redirect(route('cameras'));
+        return redirect(route('cameras.index'));
     }
 
     public function render()

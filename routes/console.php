@@ -8,11 +8,11 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-Artisan::command('lapse:snap', function () {
+Artisan::command('timelapse:run', function () {
     $lapses = Lapse::dueForSnapshot()->get();
 
     $lapses->each(function (Lapse $lapse) {
-        $lapse->snapshot();
-        $this->info("Snapshot triggered for {$lapse->name}");
+        \App\Actions\Timelapses\QueueSnapshots::run($lapse);
+        $this->info("Snapshots queued for {$lapse->name}");
     });
 })->everyMinute();

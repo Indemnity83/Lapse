@@ -2,6 +2,8 @@
 
 namespace App\Livewire\Lapses;
 
+use App\Actions\Timelapses\PauseTimelapse;
+use App\Actions\Timelapses\RunTimelapse;
 use App\Models\Lapse;
 use Livewire\Component;
 
@@ -14,16 +16,14 @@ class Status extends Component
         $this->lapse = $lapse;
     }
 
-    public function pauseLapse(): void
+    public function pauseLapse(PauseTimelapse $pauseTimelapse): void
     {
-        // TODO: Turn this into an action
-        $this->lapse->pause();
+        $pauseTimelapse->handle($this->lapse);
     }
 
-    public function runLapse(): void
+    public function runLapse(RunTimelapse $runTimelapse): void
     {
-        // TODO: Turn this into an action
-        $this->lapse->run();
+        $runTimelapse->handle($this->lapse);
     }
 
     public function render()
