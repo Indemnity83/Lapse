@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\UnknownExtension;
 use App\Models\Camera;
 use App\Models\Lapse;
 use Illuminate\Bus\Queueable;
@@ -47,6 +48,9 @@ class CaptureSnapshot implements ShouldQueue
         return "camera-{$this->camera->id}-{$formattedDate}.{$ext}";
     }
 
+    /**
+     * @throws UnknownExtension
+     */
     protected function parseExtension(string $url): string
     {
         $ext = pathinfo($url, PATHINFO_EXTENSION);
@@ -63,8 +67,10 @@ class CaptureSnapshot implements ShouldQueue
 
         $type = get_headers($this->camera->url, 1)['Content-Type'];
 
-        // TODO: returns jpeg if nothing else could be found, would likely
-        //       result in corrupt files, should handle this better.
-        return Arr::get($extensions, $type, 'jpeg');
+        if (Arr::has($extensions, $type)) {
+            return Arr::get($extensions, $type);
+        }
+
+        throw new UnknownExtension('Cannot determine the file type/extension for the file');
     }
 }
