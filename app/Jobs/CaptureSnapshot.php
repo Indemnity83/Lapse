@@ -23,7 +23,6 @@ class CaptureSnapshot implements ShouldQueue
         public Camera $camera,
         public Lapse $lapse
     ) {
-        $this->onQueue('snapshots');
     }
 
     /**

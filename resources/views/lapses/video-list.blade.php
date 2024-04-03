@@ -26,7 +26,7 @@
                                 <div class="flex items-center">
                                     <!-- Video Download -->
                                     <a
-                                        class="ms-6 cursor-pointer text-sm text-gray-500 hover:underline focus:outline-none"
+                                        class="ms-6 cursor-pointer text-sm text-gray-400 hover:underline focus:outline-none"
                                         href="{{ $video->getUrl() }}"
                                         download="{{ $video->file_name }}"
                                     >
