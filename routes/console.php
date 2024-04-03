@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -9,10 +9,10 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Artisan::command('timelapse:run', function () {
-    $lapses = Lapse::dueForSnapshot()->get();
+    $timelapses = Timelapse::dueForSnapshot()->get();
 
-    $lapses->each(function (Lapse $lapse) {
-        \App\Actions\Timelapses\QueueSnapshots::run($lapse);
-        $this->info("Snapshots queued for {$lapse->name}");
+    $timelapses->each(function (Timelapse $timelapse) {
+        \App\Actions\Timelapses\QueueSnapshots::run($timelapse);
+        $this->info("Snapshots queued for {$timelapse->name}");
     });
 })->everyMinute();

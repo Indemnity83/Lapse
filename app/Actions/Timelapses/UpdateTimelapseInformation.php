@@ -2,22 +2,22 @@
 
 namespace App\Actions\Timelapses;
 
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class UpdateLapseInformation
+class UpdateTimelapseInformation
 {
     use AsAction;
 
-    public function handle(Lapse $lapse, array $input)
+    public function handle(Timelapse $timelapse, array $input)
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
             'interval' => ['required', 'numeric', 'integer', 'min:1'],
-        ])->validateWithBag('updateLapseName');
+        ])->validateWithBag('updateTimelapseInformation');
 
-        $lapse->forceFill([
+        $timelapse->forceFill([
             'name' => $input['name'],
             'interval' => $input['interval'],
         ])->save();

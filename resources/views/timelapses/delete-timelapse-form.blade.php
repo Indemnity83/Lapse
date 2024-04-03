@@ -1,6 +1,6 @@
 <x-action-section>
     <x-slot name="title">
-        {{ __("Delete Lapse") }}
+        {{ __("Delete Timelapse") }}
     </x-slot>
 
     <x-slot name="description">
@@ -14,7 +14,7 @@
 
         <div class="mt-5">
             <x-danger-button
-                wire:click="confirmLapseDeletion"
+                wire:click="confirmTimelapseDeletion"
                 wire:loading.attr="disabled"
             >
                 {{ __("Delete Timelapse") }}
@@ -22,7 +22,7 @@
         </div>
 
         <!-- Delete User Confirmation Modal -->
-        <x-dialog-modal wire:model.live="confirmingLapseDeletion">
+        <x-dialog-modal wire:model.live="confirmingTimelapseDeletion">
             <x-slot name="title">
                 {{ __("Delete Timelapse") }}
             </x-slot>
@@ -33,14 +33,14 @@
                 <div
                     class="mt-4"
                     x-data="{}"
-                    x-on:confirming-delete-user.window="setTimeout(() => $refs.lapse - name.focus(), 250)"
+                    x-on:confirming-delete-user.window="setTimeout(() => $refs.timelapse - name.focus(), 250)"
                 >
                     <x-input
                         class="mt-1 block w-3/4"
-                        placeholder="{{ $lapse->name }}"
-                        x-ref="lapse-name"
+                        placeholder="{{ $timelapse->name }}"
+                        x-ref="timelapse-name"
                         wire:model="name"
-                        wire:keydown.enter="deleteLapse"
+                        wire:keydown.enter="deleteTimelapse"
                     />
 
                     <x-input-error for="name" class="mt-2" />
@@ -58,7 +58,7 @@
 
             <x-slot name="footer">
                 <x-secondary-button
-                    wire:click="$toggle('confirmingLapseDeletion')"
+                    wire:click="$toggle('confirmingTimelapseDeletion')"
                     wire:loading.attr="disabled"
                 >
                     {{ __("Cancel") }}
@@ -66,7 +66,7 @@
 
                 <x-danger-button
                     class="ms-3"
-                    wire:click="deleteLapse"
+                    wire:click="deleteTimelapse"
                     wire:loading.attr="disabled"
                 >
                     {{ __("Delete Timelapse") }}

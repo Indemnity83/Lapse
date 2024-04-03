@@ -26,7 +26,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  *
  * @method static Builder dueForSnapshot()
  */
-class Lapse extends Model implements HasMedia
+class Timelapse extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
@@ -71,7 +71,7 @@ class Lapse extends Model implements HasMedia
         return Attribute::make(
             get: fn () => new MediaCollection(Media::query()
                 ->where('collection_name', config('media.snapshots'))
-                ->where('custom_properties->lapse_id', $this->id)
+                ->where('custom_properties->timelapse_id', $this->id)
                 ->get())
         );
     }

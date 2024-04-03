@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +13,7 @@ return new class extends Migration
         Schema::create('camera_lapse', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Camera::class);
-            $table->foreignIdFor(Lapse::class);
+            $table->foreignIdFor(Timelapse::class);
         });
     }
 

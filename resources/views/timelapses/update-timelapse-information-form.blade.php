@@ -1,4 +1,4 @@
-<x-form-section submit="updateLapseName">
+<x-form-section submit="updateTimelapseName">
     <x-slot name="title">
         {{ __("Timelapse Information") }}
     </x-slot>
@@ -10,7 +10,7 @@
     <x-slot name="form">
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="name" value="{{ __('Lapse Name') }}" />
+            <x-label for="name" value="{{ __('Timelapse Name') }}" />
             <x-input
                 id="name"
                 type="text"

@@ -9,17 +9,17 @@ class TimelapsePathGenerator implements PathGenerator
 {
     public function getPath(Media $media): string
     {
-        return $this->getBasePath($media) . '/';
+        return $this->getBasePath($media).'/';
     }
 
     public function getPathForConversions(Media $media): string
     {
-        return $this->getBasePath($media) . '/conversions/';
+        return $this->getBasePath($media).'/conversions/';
     }
 
     public function getPathForResponsiveImages(Media $media): string
     {
-        return $this->getBasePath($media) . '/responsive-images/';
+        return $this->getBasePath($media).'/responsive-images/';
     }
 
     protected function getBasePath(Media $media): string
@@ -27,7 +27,7 @@ class TimelapsePathGenerator implements PathGenerator
         $prefix = config('media-library.prefix', '');
 
         if ($prefix !== '') {
-            return $prefix . '/' . $this->getKey($media);
+            return $prefix.'/'.$this->getKey($media);
         }
 
         return $this->getKey($media);
@@ -35,8 +35,8 @@ class TimelapsePathGenerator implements PathGenerator
 
     protected function getKey(Media $media): string
     {
-        if ($media->hasCustomProperty('lapse_id')) {
-            return 'timelapse-' . $media->getCustomProperty('lapse_id');
+        if ($media->hasCustomProperty('timelapse_id')) {
+            return 'timelapse-'.$media->getCustomProperty('timelapse_id');
         }
 
         return $media->getKey();

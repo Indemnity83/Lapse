@@ -45,7 +45,7 @@
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div class="ms-4 dark:text-white">
-                                        {{ $camera->snapshotsFor($lapse)->count() }}
+                                        {{ $camera->snapshotsFor($timelapse)->count() }}
                                         {{ __("snapshots") }} from
                                         {{ $camera->name }}
                                     </div>

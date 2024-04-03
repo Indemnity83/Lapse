@@ -30,8 +30,8 @@
                     </x-nav-link>
 
                     <x-nav-link
-                        href="{{ route('lapses.index') }}"
-                        :active="request()->routeIs('lapses.index')"
+                        href="{{ route('timelapses.index') }}"
+                        :active="request()->routeIs('timelapses.index')"
                     >
                         {{ __("Timelapses") }}
                     </x-nav-link>
@@ -263,8 +263,8 @@
             </x-nav-link>
 
             <x-nav-link
-                href="{{ route('lapses.index') }}"
-                :active="request()->routeIs('lapses.index')"
+                href="{{ route('timelapses.index') }}"
+                :active="request()->routeIs('timelapses.index')"
             >
                 {{ __("Timelapses") }}
             </x-nav-link>

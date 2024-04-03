@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Livewire\Lapses;
+namespace App\Livewire\Timelapses;
 
 use App\Jobs\GenerateVideo;
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Spatie\MediaLibrary\Support\MediaStream;
 
 class CameraForm extends Component
 {
-    public Lapse $lapse;
+    public Timelapse $timelapse;
 
     public Collection $cameras;
 
     public Collection $camerasWithSnapshots;
 
-    public function mount(Lapse $lapse): void
+    public function mount(Timelapse $timelapse): void
     {
-        $this->lapse = $lapse;
+        $this->timelapse = $timelapse;
         $this->camerasWithSnapshots = Camera::query()->whereHas('media', function ($query) {
             $query
                 ->where('collection_name', config('media.snapshots'))
-                ->where('custom_properties->lapse_id', $this->lapse->id);
+                ->where('custom_properties->timelapse_id', $this->timelapse->id);
         })->get();
 
         $this->cameras = Camera::all()->map(fn (Camera $camera) => [
             'id' => $camera->id,
             'name' => $camera->name,
-            'enabled' => $lapse->cameras->contains('id', $camera->id),
+            'enabled' => $timelapse->cameras->contains('id', $camera->id),
         ]);
     }
 
@@ -40,9 +40,9 @@ class CameraForm extends Component
                 $camera['enabled'] = ! $camera['enabled'];
 
                 if ($camera['enabled']) {
-                    $this->lapse->cameras()->attach($cameraId);
+                    $this->timelapse->cameras()->attach($cameraId);
                 } else {
-                    $this->lapse->cameras()->detach($cameraId);
+                    $this->timelapse->cameras()->detach($cameraId);
                 }
             }
 
@@ -52,7 +52,7 @@ class CameraForm extends Component
 
     public function download($cameraId)
     {
-        $snapshots = Camera::findOrFail($cameraId)->snapshotsFor($this->lapse);
+        $snapshots = Camera::findOrFail($cameraId)->snapshotsFor($this->timelapse);
 
         return MediaStream::create('snapshots.zip')->addMedia($snapshots);
     }
@@ -62,11 +62,11 @@ class CameraForm extends Component
         // TODO: let user know things are working, cache some key for being rendered
         //       that will be cleared when the job is done
         $camera = Camera::findOrFail($cameraId);
-        GenerateVideo::dispatch($this->lapse, $camera);
+        GenerateVideo::dispatch($this->timelapse, $camera);
     }
 
     public function render()
     {
-        return view('lapses.camera-form');
+        return view('timelapses.camera-form');
     }
 }

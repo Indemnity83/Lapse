@@ -1,32 +1,32 @@
 <?php
 
-namespace App\Livewire\Lapses;
+namespace App\Livewire\Timelapses;
 
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Livewire\Component;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class VideoList extends Component
 {
-    public $lapse;
+    public $timelapse;
 
     public MediaCollection $videos;
 
-    public function mount(Lapse $lapse)
+    public function mount(Timelapse $timelapse)
     {
-        $this->lapse = $lapse;
-        $this->videos = $lapse->getMedia('timelapse');
+        $this->timelapse = $timelapse;
+        $this->videos = $timelapse->getMedia('timelapse');
     }
 
     public function delete($mediaId)
     {
         Media::findOrfail($mediaId)->delete();
-        $this->videos = $this->lapse->getMedia('timelapse');
+        $this->videos = $this->timelapse->getMedia('timelapse');
     }
 
     public function render()
     {
-        return view('lapses.video-list');
+        return view('timelapses.video-list');
     }
 }

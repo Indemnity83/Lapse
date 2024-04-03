@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Livewire\Lapses;
+namespace App\Livewire\Timelapses;
 
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
 
-class LapseManager extends Component
+class TimelapseManager extends Component
 {
-    public Collection $lapses;
+    public Collection $timelapses;
 
     public Collection $cameras;
 
-    public array $addLapseForm = [
+    public array $addTimelapseForm = [
         'name' => '',
         'interval' => 5,
     ];
 
-    public $lapseCameras = [];
+    public $timelapseCameras = [];
 
     protected $listeners = [
         'cameraAdded',
@@ -50,21 +50,21 @@ class LapseManager extends Component
         });
     }
 
-    public function addLapse(): void
+    public function addTimelapse(): void
     {
         $this->resetErrorBag();
 
-        $lapse = Lapse::create([
-            'name' => $this->addLapseForm['name'],
-            'interval' => $this->addLapseForm['interval'],
+        $timelapse = Timelapse::create([
+            'name' => $this->addTimelapseForm['name'],
+            'interval' => $this->addTimelapseForm['interval'],
             'is_paused' => true,
         ]);
 
-        $lapse->cameras()->attach($this->cameras
+        $timelapse->cameras()->attach($this->cameras
             ->where(fn ($camera) => $camera['enabled'] === true)
             ->pluck('id'));
 
-        $this->addLapseForm = [
+        $this->addTimelapseForm = [
             'name' => '',
             'interval' => 5,
         ];
@@ -75,14 +75,14 @@ class LapseManager extends Component
             return $camera;
         });
 
-        $this->lapses = Lapse::all();
+        $this->timelapses = Timelapse::all();
 
         $this->dispatch('saved');
     }
 
     public function resetFormData(): void
     {
-        $this->lapses = Lapse::all();
+        $this->timelapses = Timelapse::all();
         $this->cameras = Camera::all()->map(fn (Camera $camera) => [
             'id' => $camera->id,
             'name' => $camera->name,
@@ -92,6 +92,6 @@ class LapseManager extends Component
 
     public function render(): View
     {
-        return view('lapses.lapse-manager');
+        return view('timelapses.timelapse-manager');
     }
 }
