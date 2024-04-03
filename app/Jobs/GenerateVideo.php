@@ -37,7 +37,7 @@ class GenerateVideo implements ShouldQueue
         $output = tempnam(sys_get_temp_dir(), 'ffmpeg') . '.mp4';
         $pattern = storage_path("app/public/timelapse-{$this->lapse->id}/camera-{$this->camera->id}-*.jpeg");
 
-        shell_exec("ffmpeg -framerate {$this->framerate} -pattern_type glob -i \"{$pattern}\" {$output}");
+        shell_exec("ffmpeg -framerate {$this->framerate} -pattern_type glob -i \"{$pattern}\" {$output} 2>&1");
 
         $media = $this->lapse
             ->addMedia($output)
