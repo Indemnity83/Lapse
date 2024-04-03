@@ -26,7 +26,7 @@
                                 <div class="flex items-center">
                                     <!-- Video Download -->
                                     <a
-                                        class="ms-6 cursor-pointer text-sm text-gray-400 hover:underline focus:outline-none"
+                                        class="ms-6 cursor-pointer text-sm text-sky-600 hover:underline focus:outline-none"
                                         href="{{ $video->getUrl() }}"
                                         download="{{ $video->file_name }}"
                                     >
@@ -34,7 +34,7 @@
                                     </a>
 
                                     <button
-                                        class="ms-6 cursor-pointer text-sm text-red-500 focus:outline-none"
+                                        class="ms-6 cursor-pointer text-sm text-red-600 focus:outline-none"
                                         wire:click="delete({{ $video->id }})"
                                     >
                                         {{ __("Delete") }}

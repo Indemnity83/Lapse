@@ -54,14 +54,14 @@
         <p class="mt-4 text-sm">
             <a
                 href="https://laravel.com/docs"
-                class="inline-flex items-center font-semibold text-indigo-700 dark:text-indigo-300"
+                class="inline-flex items-center font-semibold text-sky-700 dark:text-sky-300"
             >
                 Explore the documentation
 
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
-                    class="ms-1 h-5 w-5 fill-indigo-500 dark:fill-indigo-200"
+                    class="ms-1 h-5 w-5 fill-sky-500 dark:fill-sky-200"
                 >
                     <path
                         fill-rule="evenodd"
@@ -105,14 +105,14 @@
         <p class="mt-4 text-sm">
             <a
                 href="https://laracasts.com"
-                class="inline-flex items-center font-semibold text-indigo-700 dark:text-indigo-300"
+                class="inline-flex items-center font-semibold text-sky-700 dark:text-sky-300"
             >
                 Start watching Laracasts
 
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
-                    class="ms-1 h-5 w-5 fill-indigo-500 dark:fill-indigo-200"
+                    class="ms-1 h-5 w-5 fill-sky-500 dark:fill-sky-200"
                 >
                     <path
                         fill-rule="evenodd"

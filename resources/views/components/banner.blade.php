@@ -6,7 +6,7 @@
 
 <div
     x-data="{{ json_encode(["show" => true, "style" => $style, "message" => $message]) }}"
-    :class="{ 'bg-indigo-500': style == 'success', 'bg-red-700': style == 'danger', 'bg-gray-500': style != 'success' && style != 'danger' }"
+    :class="{ 'bg-sky-500': style == 'success', 'bg-red-700': style == 'danger', 'bg-gray-500': style != 'success' && style != 'danger' }"
     style="display: none"
     x-show="show && message"
     x-on:banner-message.window="
@@ -20,7 +20,7 @@
             <div class="flex w-0 min-w-0 flex-1 items-center">
                 <span
                     class="flex rounded-lg p-2"
-                    :class="{ 'bg-indigo-600': style == 'success', 'bg-red-600': style == 'danger' }"
+                    :class="{ 'bg-sky-600': style == 'success', 'bg-red-600': style == 'danger' }"
                 >
                     <svg
                         x-show="style == 'success'"
@@ -79,7 +79,7 @@
                 <button
                     type="button"
                     class="-me-1 flex rounded-md p-2 transition focus:outline-none sm:-me-2"
-                    :class="{ 'hover:bg-indigo-600 focus:bg-indigo-600': style == 'success', 'hover:bg-red-600 focus:bg-red-600': style == 'danger' }"
+                    :class="{ 'hover:bg-sky-600 focus:bg-sky-600': style == 'success', 'hover:bg-red-600 focus:bg-red-600': style == 'danger' }"
                     aria-label="Dismiss"
                     x-on:click="show = false"
                 >

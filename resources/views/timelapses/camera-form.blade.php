@@ -55,7 +55,7 @@
                                     <!-- Zip Download -->
                                     <button
                                         wire:click="download({{ $camera->id }})"
-                                        class="ms-6 flex cursor-pointer text-sm text-gray-400 hover:underline focus:outline-none"
+                                        class="ms-6 flex cursor-pointer text-sm text-sky-600 hover:underline focus:outline-none"
                                     >
                                         {{ __("Download") }}
                                     </button>
@@ -63,7 +63,7 @@
                                     <!-- Render Video -->
                                     <button
                                         wire:click="video({{ $camera->id }})"
-                                        class="ms-6 flex cursor-pointer text-sm text-gray-400 hover:underline focus:outline-none"
+                                        class="ms-6 flex cursor-pointer text-sm text-sky-600 hover:underline focus:outline-none"
                                     >
                                         @if (false)
                                             <svg
