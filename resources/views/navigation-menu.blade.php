@@ -24,14 +24,14 @@
 
                     <x-nav-link
                         href="{{ route('cameras.index') }}"
-                        :active="request()->routeIs('cameras.index')"
+                        :active="request()->routeIs('cameras.index', 'cameras.show')"
                     >
                         {{ __("Cameras") }}
                     </x-nav-link>
 
                     <x-nav-link
                         href="{{ route('timelapses.index') }}"
-                        :active="request()->routeIs('timelapses.index')"
+                        :active="request()->routeIs('timelapses.index', 'timelapses.show')"
                     >
                         {{ __("Timelapses") }}
                     </x-nav-link>
@@ -255,19 +255,19 @@
                 {{ __("Dashboard") }}
             </x-responsive-nav-link>
 
-            <x-nav-link
+            <x-responsive-nav-link
                 href="{{ route('cameras.index') }}"
-                :active="request()->routeIs('cameras.index')"
+                :active="request()->routeIs('cameras.index', 'cameras.show')"
             >
                 {{ __("Cameras") }}
-            </x-nav-link>
+            </x-responsive-nav-link>
 
-            <x-nav-link
+            <x-responsive-nav-link
                 href="{{ route('timelapses.index') }}"
-                :active="request()->routeIs('timelapses.index')"
+                :active="request()->routeIs('timelapses.index', 'timelapses.show')"
             >
                 {{ __("Timelapses") }}
-            </x-nav-link>
+            </x-responsive-nav-link>
 
             <x-responsive-nav-link
                 href="{{ route('admin') }}"
