@@ -42,3 +42,4 @@ jobs:
           commit_message: "style: apply code style fixes"
           commit_user_name: GitHub Action
           commit_user_email: actions@github.com
+          token: ${{ secrets.PAT }}

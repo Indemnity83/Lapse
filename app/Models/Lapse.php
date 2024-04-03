@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -24,9 +26,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  *
  * @method static Builder dueForSnapshot()
  */
-class Lapse extends Model
+class Lapse extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $casts = [
         'last_snapshot_at' => 'datetime',

@@ -11,7 +11,7 @@
     {!! $attributes->merge(["class" => "mb-2 flex items-center"]) !!}
 >
     <div
-        class="{{ $checked ? "bg-gray-800" : "bg-gray-200 dark:bg-gray-900" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
+        class="{{ $checked ? "bg-gray-800 dark:bg-gray-600" : "bg-gray-200 dark:bg-gray-900" }} relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2"
     >
         <span
             aria-hidden="true"
