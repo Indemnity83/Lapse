@@ -20,6 +20,8 @@
 
             @livewire("lapses.camera-form", ["lapse" => $lapse])
 
+            @livewire("lapses.video-list", ["lapse" => $lapse])
+
             <x-section-border />
 
             <div class="mt-10 sm:mt-0">

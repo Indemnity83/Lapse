@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Lapses;
 
+use App\Jobs\GenerateVideo;
 use App\Models\Camera;
 use App\Models\Lapse;
 use Illuminate\Support\Collection;
@@ -49,16 +50,19 @@ class CameraForm extends Component
         });
     }
 
-    public function downloadZip($cameraId)
+    public function download($cameraId)
     {
         $snapshots = Camera::findOrFail($cameraId)->snapshotsFor($this->lapse);
 
         return MediaStream::create('snapshots.zip')->addMedia($snapshots);
     }
 
-    public function downloadMovie($cameraId)
+    public function video($cameraId)
     {
-        // TODO: Implement movie
+        // TODO: let user know things are working, cache some key for being rendered
+        //       that will be cleared when the job is done
+        $camera = Camera::findOrFail($cameraId);
+        GenerateVideo::dispatch($this->lapse, $camera);
     }
 
     public function render()
