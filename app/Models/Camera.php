@@ -11,7 +11,6 @@ use Illuminate\Support\Collection;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
@@ -43,14 +42,6 @@ class Camera extends Model implements HasMedia
         $this
             ->addMediaCollection(config('media.snapshots'))
             ->acceptsMimeTypes(['image/jpeg', 'image/png']);
-    }
-
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->width(200)
-            ->height(200)
-            ->sharpen(10);
     }
 
     public function snapshotsFor(Timelapse $timelapse): MediaCollection
