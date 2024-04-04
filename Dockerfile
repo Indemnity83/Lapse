@@ -18,10 +18,20 @@ RUN apk add --no-cache ffmpeg icu-dev libjpeg-turbo-dev libpng-dev libwebp-dev l
     && apk del .build-deps
 
 # Set up supervisor
-RUN apk add --no-cache supervisor
-COPY resources/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY resources/docker/supervisord.conf /etc/supervisord.conf
 COPY resources/docker/start-container /usr/local/bin/start-container
-RUN chmod +x /usr/local/bin/start-container
+RUN chmod +x /usr/local/bin/start-container \
+    && apk add --no-cache supervisor
+
+# Set some default environment variables
+ENV APP_URL="http://localhost:80"
+ENV QUEUE_CONNECTION="database"
+ENV QUEUE_WORKERS=1
+ENV SESSION_DRIVER="database"
+ENV CACHE_STORE="database"
+ENV LOG_CHANNEL="syslog"
+ENV DB_CONNECTION="sqlite"
+ENV DB_DATABASE="/app/storage/database.sqlite"
 
 # Copy the application code
 WORKDIR /app
@@ -29,17 +39,16 @@ COPY . .
 COPY --from=assets /src/public/build/ ./public/build/
 
 # Install composer and dependencies
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --optimize-autoloader --no-ansi --no-interaction --no-plugins --no-progress --no-scripts --no-cache --no-dev
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+    && composer install --optimize-autoloader --no-ansi --no-interaction --no-plugins --no-progress --no-scripts --no-cache --no-dev
 
 # Prepare Application
-RUN ls -la
 COPY .env.docker .env
-RUN php artisan key:generate
-RUN php artisan storage:link
+RUN php artisan key:generate \
+    && php artisan storage:link
 
+# App presentation
 EXPOSE 80
-ENV APP_URL="http://localhost:80"
 VOLUME ["/app/storage"]
 HEALTHCHECK CMD curl --fail http://localhost/up || exit 1
 
