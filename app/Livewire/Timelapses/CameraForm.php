@@ -13,8 +13,6 @@ class CameraForm extends Component
 {
     public Timelapse $timelapse;
 
-    public Collection $cameras;
-
     public Collection $camerasWithSnapshots;
 
     public function mount(Timelapse $timelapse): void
@@ -25,29 +23,6 @@ class CameraForm extends Component
                 ->where('collection_name', config('media.snapshots'))
                 ->where('custom_properties->timelapse_id', $this->timelapse->id);
         })->get();
-
-        $this->cameras = Camera::all()->map(fn (Camera $camera) => [
-            'id' => $camera->id,
-            'name' => $camera->name,
-            'enabled' => $timelapse->cameras->contains('id', $camera->id),
-        ]);
-    }
-
-    public function toggleCamera($cameraId): void
-    {
-        $this->cameras = $this->cameras->map(function ($camera) use ($cameraId) {
-            if ($camera['id'] == $cameraId) {
-                $camera['enabled'] = ! $camera['enabled'];
-
-                if ($camera['enabled']) {
-                    $this->timelapse->cameras()->attach($cameraId);
-                } else {
-                    $this->timelapse->cameras()->detach($cameraId);
-                }
-            }
-
-            return $camera;
-        });
     }
 
     public function download($cameraId)

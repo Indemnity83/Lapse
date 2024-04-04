@@ -1,4 +1,4 @@
-<x-form-section submit="updateCameraInformation">
+<x-form-section submit="updateCamera">
     <x-slot name="title">
         {{ __("Camera Information") }}
     </x-slot>

@@ -5,7 +5,6 @@ namespace App\Livewire\Dashboard;
 use Illuminate\Support\Number;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
-use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Statistics extends Component

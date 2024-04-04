@@ -9,17 +9,29 @@
 
     <div>
         <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            @livewire("timelapses.status", ["timelapse" => $timelapse])
+            <div class="mt-10 sm:mt-0">
+                @livewire("timelapses.status", ["timelapse" => $timelapse])
+            </div>
 
             <x-section-border />
 
-            @livewire("timelapses.update-timelapse-information-form", ["timelapse" => $timelapse])
+            <div class="mt-10 sm:mt-0">
+                @livewire("timelapses.update-timelapse-form", ["timelapse" => $timelapse])
+            </div>
 
-            <x-section-border />
+            @if ($timelapse->snapshots->count())
+                <x-section-border />
+                <div class="mt-10 sm:mt-0">
+                    @livewire("timelapses.camera-form", ["timelapse" => $timelapse])
+                </div>
+            @endif
 
-            @livewire("timelapses.camera-form", ["timelapse" => $timelapse])
-
-            @livewire("timelapses.video-list", ["timelapse" => $timelapse])
+            @if ($timelapse->videos->count())
+                <x-section-border />
+                <div class="mt-10 sm:mt-0">
+                    @livewire("timelapses.video-list", ["timelapse" => $timelapse])
+                </div>
+            @endif
 
             <x-section-border />
 

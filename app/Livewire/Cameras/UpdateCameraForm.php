@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Cameras;
 
-use App\Actions\Cameras\UpdateCameraInformation;
+use App\Actions\Cameras\UpdateCamera;
 use Livewire\Component;
 
-class UpdateCameraInformationForm extends Component
+class UpdateCameraForm extends Component
 {
     public $camera;
 
@@ -18,17 +18,17 @@ class UpdateCameraInformationForm extends Component
         $this->state = $camera->withoutRelations()->toArray();
     }
 
-    public function updateCameraInformation(UpdateCameraInformation $updateCameraInformation): void
+    public function updateCamera(UpdateCamera $updateCamera): void
     {
         $this->resetErrorBag();
 
-        $updateCameraInformation->handle($this->camera, $this->state);
+        $updateCamera->handle($this->camera, $this->state);
 
         $this->dispatch('saved');
     }
 
     public function render()
     {
-        return view('cameras.update-camera-information-form');
+        return view('cameras.update-camera-form');
     }
 }

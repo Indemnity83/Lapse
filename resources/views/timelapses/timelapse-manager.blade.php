@@ -1,6 +1,6 @@
 <div>
     <div class="mt-10 sm:mt-0">
-        <x-form-section submit="addTimelapse">
+        <x-form-section submit="createTimelapse">
             <x-slot name="title">
                 {{ __("Add A Timelapse") }}
             </x-slot>
@@ -17,7 +17,7 @@
                         id="name"
                         type="text"
                         class="mt-1 block w-full"
-                        wire:model="addTimelapseForm.name"
+                        wire:model="state.name"
                     />
                     <x-input-error for="name" class="mt-2" />
                 </div>
@@ -32,24 +32,33 @@
                         id="interval"
                         type="number"
                         class="mt-1 block w-full"
-                        wire:model="addTimelapseForm.interval"
+                        wire:model="state.interval"
                         min="1"
                     />
                     <x-input-error for="url" class="mt-2" />
                 </div>
 
-                <div
-                    class="col-span-6 grid grid-flow-row-dense grid-cols-1 sm:grid-cols-3"
-                >
-                    @foreach ($cameras as $camera)
-                        <x-toggle
-                            id="cam-{{ $camera['id'] }}"
-                            checked="{{ $camera['enabled'] }}"
-                            wire:click="toggleCamera({{ $camera['id'] }})"
-                        >
-                            {{ $camera["name"] }}
-                        </x-toggle>
-                    @endforeach
+                <div class="col-span-6">
+                    <x-label value="{{ __('Cameras') }}" />
+                    <div
+                        class="sm:grid-cols my-2 grid grid-cols-3 rounded-md border border-gray-300 p-4 dark:border-gray-700"
+                    >
+                        @foreach ($cameras as $camera)
+                            <x-label for="terms">
+                                <div class="flex items-center">
+                                    <x-checkbox
+                                        value="{{ $camera['id'] }}"
+                                        wire:model="state.cameras.{{ $camera['id'] }}"
+                                    />
+
+                                    <div class="ms-2">
+                                        {{ $camera["name"] }}
+                                    </div>
+                                </div>
+                            </x-label>
+                        @endforeach
+                    </div>
+                    <x-input-error for="cameras" class="mt-2" />
                 </div>
             </x-slot>
 

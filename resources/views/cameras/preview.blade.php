@@ -8,6 +8,11 @@
     </x-slot>
 
     <x-slot name="content">
-        <img wire:poll.1s class="aspect-video w-full" src="{{ $camera->url . '?timestamp=' . time()  }}" alt="{{ $camera->name }}" />
+        <img
+            wire:poll.1s
+            class="aspect-video w-full"
+            src="{{ $camera->url . "?timestamp=" . time() }}"
+            alt="{{ $camera->name }}"
+        />
     </x-slot>
 </x-action-section>

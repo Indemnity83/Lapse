@@ -25,7 +25,7 @@
                         id="name"
                         type="text"
                         class="mt-1 block w-full"
-                        wire:model="addCameraForm.name"
+                        wire:model="state.name"
                     />
                     <x-input-error for="name" class="mt-2" />
                 </div>
@@ -37,7 +37,7 @@
                         id="url"
                         type="url"
                         class="mt-1 block w-full"
-                        wire:model="addCameraForm.url"
+                        wire:model="state.url"
                     />
                     <x-input-error for="url" class="mt-2" />
                 </div>

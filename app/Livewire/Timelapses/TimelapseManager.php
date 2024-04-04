@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Timelapses;
 
+use App\Actions\Timelapses\CreateTimelapse;
 use App\Models\Camera;
 use App\Models\Timelapse;
 use Illuminate\Support\Collection;
@@ -14,80 +15,35 @@ class TimelapseManager extends Component
 
     public Collection $cameras;
 
-    public array $addTimelapseForm = [
-        'name' => '',
-        'interval' => 5,
-    ];
-
-    public $timelapseCameras = [];
-
-    protected $listeners = [
-        'cameraAdded',
-    ];
+    public $state;
 
     public function mount(): void
     {
-        $this->resetFormData();
+        $this->timelapses = Timelapse::all();
+        $this->cameras = Camera::all();
+
+        $this->state = [
+            'name' => '',
+            'interval' => 5,
+            'cameras' => [],
+        ];
     }
 
-    public function cameraAdded(): void
-    {
-        $this->cameras = Camera::all()->map(fn (Camera $camera) => [
-            'id' => $camera->id,
-            'name' => $camera->name,
-            'enabled' => false,
-        ]);
-    }
-
-    public function toggleCamera($cameraId): void
-    {
-        $this->cameras = $this->cameras->map(function ($camera) use ($cameraId) {
-            if ($camera['id'] == $cameraId) {
-                $camera['enabled'] = ! $camera['enabled'];
-            }
-
-            return $camera;
-        });
-    }
-
-    public function addTimelapse(): void
+    public function createTimelapse(CreateTimelapse $createTimelapse): void
     {
         $this->resetErrorBag();
 
-        $timelapse = Timelapse::create([
-            'name' => $this->addTimelapseForm['name'],
-            'interval' => $this->addTimelapseForm['interval'],
-            'is_paused' => true,
-        ]);
+        $createTimelapse->handle($this->state);
 
-        $timelapse->cameras()->attach($this->cameras
-            ->where(fn ($camera) => $camera['enabled'] === true)
-            ->pluck('id'));
-
-        $this->addTimelapseForm = [
+        $this->state = [
             'name' => '',
             'interval' => 5,
+            'cameras' => [],
         ];
-
-        $this->cameras = $this->cameras->map(function ($camera) {
-            $camera['enabled'] = false;
-
-            return $camera;
-        });
 
         $this->timelapses = Timelapse::all();
 
         $this->dispatch('saved');
-    }
-
-    public function resetFormData(): void
-    {
-        $this->timelapses = Timelapse::all();
-        $this->cameras = Camera::all()->map(fn (Camera $camera) => [
-            'id' => $camera->id,
-            'name' => $camera->name,
-            'enabled' => false,
-        ]);
     }
 
     public function render(): View
