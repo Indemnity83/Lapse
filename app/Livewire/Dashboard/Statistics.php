@@ -10,28 +10,35 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Statistics extends Component
 {
-    public MediaCollection $media;
-
-    public function mount(): void
+    public function snapshotCount(): string
     {
-        $this->fresh();
-    }
-
-    public function fresh(): void
-    {
-        $this->media = new MediaCollection(Media::all());
+        return Number::format(Media::query()
+            ->where('collection_name', 'snapshots')
+            ->count());
     }
 
     #[Computed]
-    public function countForHumans()
+    public function timelapseCount(): string
     {
-        return Number::forHumans($this->media->count());
+        return Number::format(Media::query()
+            ->where('collection_name', 'timelapse')
+            ->count());
     }
 
     #[Computed]
-    public function sizeForHumans()
+    public function snapshotSize(): string
     {
-        return Number::fileSize($this->media->totalSizeInBytes());
+        return Number::fileSize(Media::query()
+            ->where('collection_name', 'snapshots')
+            ->sum('size'), 2);
+    }
+
+    #[Computed]
+    public function timelapseSize(): string
+    {
+        return Number::fileSize(Media::query()
+            ->where('collection_name', 'timelapse')
+            ->sum('size'), 2);
     }
 
     public function render()
