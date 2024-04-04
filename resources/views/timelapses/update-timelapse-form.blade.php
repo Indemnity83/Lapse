@@ -1,4 +1,4 @@
-<x-form-section submit="updateLapseName">
+<x-form-section submit="updateTimelapseInformation">
     <x-slot name="title">
         {{ __("Timelapse Information") }}
     </x-slot>
@@ -10,7 +10,7 @@
     <x-slot name="form">
         <!-- Name -->
         <div class="col-span-6 sm:col-span-4">
-            <x-label for="name" value="{{ __('Lapse Name') }}" />
+            <x-label for="name" value="{{ __('Timelapse Name') }}" />
             <x-input
                 id="name"
                 type="text"
@@ -31,7 +31,31 @@
                 wire:model="state.interval"
                 min="1"
             />
-            <x-input-error for="url" class="mt-2" />
+            <x-input-error for="interval" class="mt-2" />
+        </div>
+
+        <!-- Cameras -->
+        <div class="col-span-6">
+            <x-label value="{{ __('Cameras') }}" />
+            <div
+                class="sm:grid-cols my-2 grid grid-cols-3 rounded-md border border-gray-300 p-4 dark:border-gray-700"
+            >
+                @foreach ($cameras as $camera)
+                    <x-label for="terms">
+                        <div class="flex items-center">
+                            <x-checkbox
+                                value="{{ $camera->id }}"
+                                wire:model="state.cameras.{{ $camera->id }}"
+                            />
+
+                            <div class="ms-2">
+                                {{ $camera->name }}
+                            </div>
+                        </div>
+                    </x-label>
+                @endforeach
+            </div>
+            <x-input-error for="cameras" class="mt-2" />
         </div>
     </x-slot>
 

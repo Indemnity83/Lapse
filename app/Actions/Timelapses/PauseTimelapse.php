@@ -2,16 +2,16 @@
 
 namespace App\Actions\Timelapses;
 
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class PauseTimelapse
 {
     use AsAction;
 
-    public function handle(Lapse $lapse)
+    public function handle(Timelapse $timelapse)
     {
-        $lapse->is_paused = true;
-        $lapse->save();
+        $timelapse->is_paused = true;
+        $timelapse->save();
     }
 }

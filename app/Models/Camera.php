@@ -19,7 +19,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read string $thumb_url
- * @property-read Collection<Lapse> $lapses
+ * @property-read Collection<Timelapse> $timelapses
  * @property-read MediaCollection $snapshots
  */
 class Camera extends Model implements HasMedia
@@ -32,9 +32,9 @@ class Camera extends Model implements HasMedia
         'url',
     ];
 
-    public function lapses(): BelongsToMany
+    public function timelapses(): BelongsToMany
     {
-        return $this->belongsToMany(Lapse::class);
+        return $this->belongsToMany(Timelapse::class);
     }
 
     public function registerMediaCollections(): void
@@ -44,11 +44,11 @@ class Camera extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg', 'image/png']);
     }
 
-    public function snapshotsFor(Lapse $lapse): MediaCollection
+    public function snapshotsFor(Timelapse $timelapse): MediaCollection
     {
         return new MediaCollection($this->media()
             ->where('collection_name', config('media.snapshots'))
-            ->where('custom_properties->lapse_id', $lapse->id)
+            ->where('custom_properties->timelapse_id', $timelapse->id)
             ->get());
     }
 

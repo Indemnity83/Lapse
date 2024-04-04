@@ -46,7 +46,7 @@
                                 @foreach ($this->roles as $index => $role)
                                     <button
                                         type="button"
-                                        class="{{ $index > 0 ? "rounded-t-none border-t border-gray-200 focus:border-none dark:border-gray-700" : "" }} {{ ! $loop->last ? "rounded-b-none" : "" }} relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
+                                        class="{{ $index > 0 ? "rounded-t-none border-t border-gray-200 focus:border-none dark:border-gray-700" : "" }} {{ ! $loop->last ? "rounded-b-none" : "" }} relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:border-sky-600 dark:focus:ring-sky-600"
                                         wire:click="$set('addTeamMemberForm.role', '{{ $role->key }}')"
                                     >
                                         <div
@@ -231,7 +231,7 @@
                 @foreach ($this->roles as $index => $role)
                     <button
                         type="button"
-                        class="{{ $index > 0 ? "rounded-t-none border-t border-gray-200 focus:border-none dark:border-gray-700" : "" }} {{ ! $loop->last ? "rounded-b-none" : "" }} relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
+                        class="{{ $index > 0 ? "rounded-t-none border-t border-gray-200 focus:border-none dark:border-gray-700" : "" }} {{ ! $loop->last ? "rounded-b-none" : "" }} relative inline-flex w-full rounded-lg px-4 py-3 focus:z-10 focus:border-sky-500 focus:outline-none focus:ring-2 focus:ring-sky-500 dark:focus:border-sky-600 dark:focus:ring-sky-600"
                         wire:click="$set('currentRole', '{{ $role->key }}')"
                     >
                         <div

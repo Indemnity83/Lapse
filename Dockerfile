@@ -39,6 +39,7 @@ RUN php artisan key:generate
 RUN php artisan storage:link
 
 EXPOSE 80
+ENV APP_URL="http://localhost:80"
 VOLUME ["/app/storage"]
 HEALTHCHECK CMD curl --fail http://localhost/up || exit 1
 

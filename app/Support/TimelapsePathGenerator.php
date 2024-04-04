@@ -35,8 +35,8 @@ class TimelapsePathGenerator implements PathGenerator
 
     protected function getKey(Media $media): string
     {
-        if ($media->hasCustomProperty('lapse_id')) {
-            return 'timelapse-' . $media->getCustomProperty('lapse_id');
+        if ($media->hasCustomProperty('timelapse_id')) {
+            return 'timelapse-' . $media->getCustomProperty('timelapse_id');
         }
 
         return $media->getKey();

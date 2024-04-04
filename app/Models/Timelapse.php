@@ -16,6 +16,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property int $id
+ * @property string $name
  * @property int $interval
  * @property bool $is_paused
  * @property Carbon $last_snapshot_at
@@ -23,10 +24,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property Carbon $updated_at
  * @property-read Collection<Camera> $cameras
  * @property-read MediaCollection $snapshots
+ * @property-read MediaCollection $videos
  *
  * @method static Builder dueForSnapshot()
  */
-class Lapse extends Model implements HasMedia
+class Timelapse extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
@@ -71,8 +73,15 @@ class Lapse extends Model implements HasMedia
         return Attribute::make(
             get: fn () => new MediaCollection(Media::query()
                 ->where('collection_name', config('media.snapshots'))
-                ->where('custom_properties->lapse_id', $this->id)
+                ->where('custom_properties->timelapse_id', $this->id)
                 ->get())
+        );
+    }
+
+    protected function videos(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->getMedia('timelapse')
         );
     }
 }

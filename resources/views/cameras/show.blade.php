@@ -9,7 +9,15 @@
 
     <div>
         <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            @livewire("cameras.update-camera-information-form", ["camera" => $camera])
+            <div class="mt-10 sm:mt-0">
+                @livewire("cameras.update-camera-form", ["camera" => $camera])
+            </div>
+
+            <x-section-border />
+
+            <div class="mt-10 sm:mt-0">
+                @livewire("cameras.preview", ["camera" => $camera])
+            </div>
 
             <x-section-border />
 

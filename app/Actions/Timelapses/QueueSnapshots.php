@@ -4,17 +4,17 @@ namespace App\Actions\Timelapses;
 
 use App\Jobs\CaptureSnapshot;
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class QueueSnapshots
 {
     use AsAction;
 
-    public function handle(Lapse $lapse)
+    public function handle(Timelapse $timelapse)
     {
-        $lapse->cameras->each(fn (Camera $camera) => CaptureSnapshot::dispatch($camera, $lapse));
-        $lapse->last_snapshot_at = now();
-        $lapse->save();
+        $timelapse->cameras->each(fn (Camera $camera) => CaptureSnapshot::dispatch($camera, $timelapse));
+        $timelapse->last_snapshot_at = now();
+        $timelapse->save();
     }
 }

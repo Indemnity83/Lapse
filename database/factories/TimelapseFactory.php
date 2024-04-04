@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Lapse>
+ * @extends Factory<Timelapse>
  */
-class LapseFactory extends Factory
+class TimelapseFactory extends Factory
 {
     /**
      * Define the model's default state.

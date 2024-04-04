@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,12 +21,12 @@ Route::get('camera/{camera}', function (Camera $camera) {
 })->name('cameras.show');
 
 Route::get('timelapse', function () {
-    return view('lapses');
-})->name('lapses.index');
+    return view('timelapses');
+})->name('timelapses.index');
 
-Route::get('timelapse/{lapse}', function (Lapse $lapse) {
-    return view('lapses.show', ['lapse' => $lapse]);
-})->name('lapses.show');
+Route::get('timelapse/{timelapse}', function (Timelapse $timelapse) {
+    return view('timelapses.show', ['timelapse' => $timelapse]);
+})->name('timelapses.show');
 
 Route::get('admin', function () {
     return view('admin');

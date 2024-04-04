@@ -4,7 +4,7 @@ namespace App\Jobs;
 
 use App\Exceptions\UnknownExtension;
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,7 +21,7 @@ class CaptureSnapshot implements ShouldQueue
 
     public function __construct(
         public Camera $camera,
-        public Lapse $lapse
+        public Timelapse $timelapse
     ) {
     }
 
@@ -36,7 +36,7 @@ class CaptureSnapshot implements ShouldQueue
             ->addMediaFromUrl($this->camera->url)
             ->usingName($this->getFilename())
             ->usingFileName($this->getFilename())
-            ->withCustomProperties(['lapse_id' => $this->lapse->id])
+            ->withCustomProperties(['timelapse_id' => $this->timelapse->id])
             ->toMediaCollection(config('media.snapshots'));
     }
 

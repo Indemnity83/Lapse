@@ -7,16 +7,16 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class UpdateCameraInformation
+class UpdateCamera
 {
     use AsAction;
 
     public function handle(Camera $camera, array $input)
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255', Rule::unique('cameras')->ignore($camera->id)],
+            'name' => ['required', 'string', 'max:100', Rule::unique('cameras')->ignore($camera->id)],
             'url' => ['required', 'url', 'max:255'],
-        ])->validateWithBag('updateCameraInformation');
+        ])->validateWithBag('updateCamera');
 
         $camera->forceFill([
             'name' => $input['name'],

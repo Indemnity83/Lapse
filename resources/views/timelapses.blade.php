@@ -9,7 +9,7 @@
 
     <div>
         <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            @livewire("lapses.lapse-manager")
+            @livewire("timelapses.timelapse-manager")
         </div>
     </div>
 </x-app-layout>

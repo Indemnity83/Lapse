@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Camera;
-use App\Models\Lapse;
+use App\Models\Timelapse;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -21,7 +21,7 @@ class GenerateVideo implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        public Lapse $lapse,
+        public Timelapse $timelapse,
         public Camera $camera,
         public int $framerate = 4
     ) {
@@ -35,11 +35,11 @@ class GenerateVideo implements ShouldQueue
     public function handle(): void
     {
         $output = tempnam(sys_get_temp_dir(), 'ffmpeg') . '.mp4';
-        $pattern = storage_path("app/public/timelapse-{$this->lapse->id}/camera-{$this->camera->id}-*.jpeg");
+        $pattern = storage_path("app/public/timelapse-{$this->timelapse->id}/camera-{$this->camera->id}-*.jpeg");
 
         shell_exec("ffmpeg -framerate {$this->framerate} -pattern_type glob -i \"{$pattern}\" {$output} 2>&1");
 
-        $media = $this->lapse
+        $media = $this->timelapse
             ->addMedia($output)
             ->usingName($this->getFilename())
             ->usingFileName($this->getFilename())

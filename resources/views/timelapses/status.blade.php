@@ -13,13 +13,16 @@
         </div>
 
         <div class="mt-5">
-            @if ($lapse->is_paused)
-                <x-button wire:click="runLapse()" wire:loading.attr="disabled">
+            @if ($timelapse->is_paused)
+                <x-button
+                    wire:click="runTimelapse()"
+                    wire:loading.attr="disabled"
+                >
                     {{ __("Start the Timelapse") }}
                 </x-button>
             @else
                 <x-secondary-button
-                    wire:click="pauseLapse()"
+                    wire:click="pauseTimelapse()"
                     wire:loading.attr="disabled"
                 >
                     {{ __("Pause the Timelapse") }}
