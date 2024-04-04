@@ -45,14 +45,6 @@ class Camera extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg', 'image/png']);
     }
 
-    public function registerMediaConversions(?Media $media = null): void
-    {
-        $this->addMediaConversion('thumb')
-            ->width(200)
-            ->height(200)
-            ->sharpen(10);
-    }
-
     public function snapshotsFor(Lapse $lapse): MediaCollection
     {
         return new MediaCollection($this->media()

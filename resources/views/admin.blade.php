@@ -9,7 +9,7 @@
 
     <div>
         <div class="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-            @livewire("admin.generate-thumbnails")
+            {{-- Waste no more time arguing what a good man should be, be one. --}}
         </div>
     </div>
 </x-app-layout>
