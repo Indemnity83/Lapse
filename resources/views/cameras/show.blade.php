@@ -13,6 +13,10 @@
 
             <x-section-border />
 
+            @livewire('cameras.preview', ['camera' => $camera])
+
+            <x-section-border />
+
             <div class="mt-10 sm:mt-0">
                 @livewire("cameras.delete-camera-form", ["camera" => $camera])
             </div>
