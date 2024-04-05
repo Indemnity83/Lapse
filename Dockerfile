@@ -14,7 +14,7 @@ RUN echo 'memory_limit = 2048M' >> /usr/local/etc/php/conf.d/docker-php-memlimit
 RUN apk add --no-cache ffmpeg icu-dev libjpeg-turbo-dev libpng-dev libwebp-dev libzip-dev \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
     && docker-php-ext-configure gd --with-jpeg --with-webp \
-    && docker-php-ext-install -j "$(nproc)" bcmath exif gd intl mysqli zip \
+    && docker-php-ext-install -j "$(nproc)" bcmath exif gd intl mysqli pdo_mysql zip \
     && apk del .build-deps
 
 # Set up supervisor
