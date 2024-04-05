@@ -33,6 +33,8 @@ ENV CACHE_STORE="database"
 ENV LOG_CHANNEL="daily"
 ENV DB_CONNECTION="sqlite"
 ENV DB_DATABASE="/app/storage/database.sqlite"
+ENV PUID=99
+ENV PGID=100
 
 # Copy the application code
 WORKDIR /app
