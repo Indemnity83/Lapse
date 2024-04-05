@@ -1,4 +1,4 @@
-FROM node as assets
+FROM node:21 AS assets
 WORKDIR /src
 COPY . .
 RUN npm install && npm run build
@@ -25,11 +25,12 @@ RUN chmod +x /usr/local/bin/start-container \
 
 # Set some default environment variables
 ENV APP_URL="http://localhost:80"
+ENV TZ="UTC"
 ENV QUEUE_CONNECTION="database"
 ENV QUEUE_WORKERS=1
 ENV SESSION_DRIVER="database"
 ENV CACHE_STORE="database"
-ENV LOG_CHANNEL="syslog"
+ENV LOG_CHANNEL="daily"
 ENV DB_CONNECTION="sqlite"
 ENV DB_DATABASE="/app/storage/database.sqlite"
 
@@ -40,7 +41,7 @@ COPY --from=assets /src/public/build/ ./public/build/
 
 # Install composer and dependencies
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
-    && composer install --optimize-autoloader --no-ansi --no-interaction --no-plugins --no-progress --no-scripts --no-cache --no-dev
+    && composer install --optimize-autoloader --no-ansi --no-interaction --no-plugins --no-progress --no-cache --no-dev
 
 # Prepare Application
 COPY .env.docker .env

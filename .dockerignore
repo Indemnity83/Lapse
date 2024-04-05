@@ -8,25 +8,23 @@
 # Ignore any local databases
 *.sqlite*
 
-# Ignore any local storage data, but keep the public folder
+# Ugly... but handle all the storage bits
 /storage/app/*
 !/storage/app/public
 /storage/app/public/*
-/public/storage
-
-# Ignore framework files
-/storage/framework/compiled.php
-/storage/framework/config.php
-/storage/framework/down
-/storage/framework/events.scanned.php
-/storage/framework/maintenance.php
-/storage/framework/routes.php
-/storage/framework/routes.scanned.php
-/storage/framework/schedule-*
-/storage/framework/services.json
-
-# Ignore local logs
-/storage/logs/*
+/storage/framework/*
+!/storage/framework/cache
+/storage/framework/cache*
+!/storage/framework/cache/data
+/storage/framework/cache/data/*
+!/storage/framework/sessions
+/storage/framework/sessions/*
+!/storage/framework/testing
+/storage/framework/testing*
+!/storage/framework/views
+/storage/framework/views/*
+/storage/logs
+/storage/media-library
 
 # Ignore the dependencies
 /node_modules
