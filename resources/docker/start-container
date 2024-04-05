@@ -1,8 +1,8 @@
 #!/bin/sh
 
-# Since the /app/storage directory is likely mapped to the host, we need to
-# re-create the directory structure on run, or the application will fail
-# to load correctly. All the instance files will stored in this path.
+# Since the /app/storage directory is mapped to the host we need to create
+# the expected directory structure on run, or the application will fail
+# to load correctly. Application runtime files are stored in this path.
 mkdir -p /app/storage/app/public
 mkdir -p /app/storage/framework/cache/data
 mkdir -p /app/storage/framework/sessions
@@ -10,6 +10,27 @@ mkdir -p /app/storage/framework/testing
 mkdir -p /app/storage/framework/views
 mkdir -p /app/storage/logs
 
-php artisan migrate --force
+# -----------------------------------------------------------------------------
+# Configure the user and group to match the host expectations
+# -----------------------------------------------------------------------------
+#
+# Attempt to get the existing puid/pgid. If they are empty or different than
+# the current run then re-apply chown with current PUID and PGID env vars
+# before writing out current values to files in root for the next run.
+previous_puid=$(cat /root/puid 2>/dev/null || true)
+previous_pgid=$(cat /root/pgid 2>/dev/null || true)
 
-exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf
+if [ ! -f /root/puid ] || [ ! -f /root/pgid ] || [ "${previous_puid}" != "${PUID}" ] || [ "${previous_pgid}" != "${PGID}" ]; then
+    sed -i -e "s/^nobody:x:65534:/nobody:x:${PGID}:/" /etc/group
+    sed -i -e "s/^nobody:x:65534:65534:/nobody:x:${PUID}:${PGID}:/" /etc/passwd
+    chown -R "${PUID}":"${PGID}" /app
+    echo "${PUID}" > /root/puid
+    echo "${PGID}" > /root/pgid
+fi
+
+# Finally we're going to run the migrations and any other necessary caching
+# commands to prepare the application and then start up supervisor which
+# will run the web server, scheduler and the configured queue workers
+php artisan migrate --force
+php artisan config:cache
+exec supervisord -c /etc/supervisord.conf
