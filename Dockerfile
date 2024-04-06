@@ -11,10 +11,12 @@ FROM php:8.2-fpm-alpine
 RUN echo 'memory_limit = 2048M' >> /usr/local/etc/php/conf.d/docker-php-memlimit.ini;
 
 # Setup the container
-RUN apk add --no-cache ffmpeg icu-dev libjpeg-turbo-dev libpng-dev libwebp-dev libzip-dev \
+RUN apk add --no-cache redis ffmpeg icu-dev libjpeg-turbo-dev libpng-dev libwebp-dev libzip-dev \
     && apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
+    && pecl install redis \
     && docker-php-ext-configure gd --with-jpeg --with-webp \
     && docker-php-ext-install -j "$(nproc)" bcmath exif gd intl mysqli pdo_mysql zip \
+    && docker-php-ext-enable redis \
     && apk del .build-deps
 
 # Set up supervisor
@@ -26,10 +28,7 @@ RUN chmod +x /usr/local/bin/start-container \
 # Set some default environment variables
 ENV APP_URL="http://localhost:80"
 ENV TZ="UTC"
-ENV QUEUE_CONNECTION="database"
-ENV QUEUE_WORKERS=1
-ENV SESSION_DRIVER="database"
-ENV CACHE_STORE="database"
+ENV QUEUE_WORKERS=5
 ENV LOG_CHANNEL="daily"
 ENV DB_CONNECTION="sqlite"
 ENV DB_DATABASE="/app/storage/database.sqlite"
