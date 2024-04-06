@@ -9,6 +9,7 @@ mkdir -p /app/storage/framework/sessions
 mkdir -p /app/storage/framework/testing
 mkdir -p /app/storage/framework/views
 mkdir -p /app/storage/logs
+touch /app/storage/database.sqlite
 
 # -----------------------------------------------------------------------------
 # Configure the user and group to match the host expectations
