@@ -1,4 +1,4 @@
-<x-form-section submit="updateTimelapseInformation">
+<x-form-section submit="updateTimelapse">
     <x-slot name="title">
         {{ __("Timelapse Information") }}
     </x-slot>
