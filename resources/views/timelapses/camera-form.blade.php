@@ -21,6 +21,14 @@
                     </div>
 
                     <div class="flex items-center">
+                        <!-- View Snapshots -->
+                        <a
+                            href="{{ route("timelapses.snapshots", ["timelapse" => $timelapse, "camera" => $camera]) }}"
+                            class="ms-6 flex cursor-pointer text-sm text-sky-600 hover:underline focus:outline-none"
+                        >
+                            {{ __("Show") }}
+                        </a>
+
                         <!-- Zip Download -->
                         <button
                             wire:click="download({{ $camera->id }})"

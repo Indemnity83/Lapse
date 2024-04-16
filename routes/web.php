@@ -28,6 +28,10 @@ Route::get('timelapse/{timelapse}', function (Timelapse $timelapse) {
     return view('timelapses.show', ['timelapse' => $timelapse]);
 })->name('timelapses.show');
 
+Route::get('timelapse/{timelapse}/camera/{camera}', function (Timelapse $timelapse, Camera $camera) {
+    return view('timelapses.snapshots', ['timelapse' => $timelapse, 'camera' => $camera]);
+})->name('timelapses.snapshots');
+
 Route::get('admin', function () {
     return view('admin');
 })->name('admin');
