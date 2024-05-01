@@ -1,3 +1,4 @@
+<div>
 <x-action-section>
     <x-slot name="title">
         {{ __("Snapshots") }}
@@ -58,3 +59,55 @@
         </div>
     </x-slot>
 </x-action-section>
+
+    <x-dialog-modal max-width="md" wire:model.live="showingRenderDialog">
+        <x-slot name="title">
+            {{ __("Generate Video") }}
+        </x-slot>
+
+        <x-slot name="content">
+            {{ __("Select the day you want to render, and the framerate you want to render the video at.") }}
+
+            <div class="grid grid-cols-6 gap-4 mt-8">
+                <div class="col-span-6 lg:col-span-4">
+                    <x-label for="date" value="{{ __('Date') }}" />
+                    <x-input
+                        id="date"
+                        type="date"
+                        class="mt-1 block w-full"
+                        wire:model="date"
+                    />
+                    <x-input-error for="date" class="mt-2" />
+                </div>
+
+                <div class="col-span-6 lg:col-span-2">
+                    <x-label for="framerate" value="{{ __('Framerate') }}" />
+                    <x-input
+                        id="framerate"
+                        type="number"
+                        class="mt-1 block w-full"
+                        wire:model="framerate"
+                    />
+                    <x-input-error for="framerate" class="mt-2" />
+                </div>
+            </div>
+        </x-slot>
+
+        <x-slot name="footer">
+            <x-secondary-button
+                wire:click="$toggle('showingRenderDialog')"
+                wire:loading.attr="disabled"
+            >
+                {{ __("Cancel") }}
+            </x-secondary-button>
+
+            <x-danger-button
+                class="ms-3"
+                wire:click="renderVideo"
+                wire:loading.attr="disabled"
+            >
+                {{ __("Render") }}
+            </x-danger-button>
+        </x-slot>
+    </x-dialog-modal>
+</div>

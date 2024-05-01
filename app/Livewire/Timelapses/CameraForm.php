@@ -15,6 +15,14 @@ class CameraForm extends Component
 
     public Collection $camerasWithSnapshots;
 
+    public $videoCameraId;
+
+    public bool $showingRenderDialog = false;
+
+    public int $framerate = 4;
+
+    public $date;
+
     public function mount(Timelapse $timelapse): void
     {
         $this->timelapse = $timelapse;
@@ -34,10 +42,28 @@ class CameraForm extends Component
 
     public function video($cameraId)
     {
+        $this->videoCameraId = $cameraId;
+        $this->framerate = 4;
+        $this->date = today();
+        $this->showingRenderDialog = true;
+    }
+
+    public function renderVideo()
+    {
+        // TODO: Validate inputs
+
         // TODO: let user know things are working, cache some key for being rendered
         //       that will be cleared when the job is done
-        $camera = Camera::findOrFail($cameraId);
-        GenerateVideo::dispatch($this->timelapse, $camera);
+        $camera = Camera::findOrFail($this->videoCameraId);
+
+        GenerateVideo::dispatch(
+            $this->timelapse,
+            $camera,
+            $this->framerate,
+            $this->date,
+        );
+
+        $this->showingRenderDialog = false;
     }
 
     public function render()

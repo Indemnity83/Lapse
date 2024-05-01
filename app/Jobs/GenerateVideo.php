@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Camera;
 use App\Models\Timelapse;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -23,8 +24,10 @@ class GenerateVideo implements ShouldQueue
     public function __construct(
         public Timelapse $timelapse,
         public Camera $camera,
-        public int $framerate = 4
+        public int $framerate = 4,
+        public ?Carbon $day = null,
     ) {
+        $this->day = $this->day ?? today();
     }
 
     /**
@@ -35,11 +38,11 @@ class GenerateVideo implements ShouldQueue
     public function handle(): void
     {
         $output = tempnam(sys_get_temp_dir(), 'ffmpeg') . '.mp4';
-        $pattern = storage_path("app/public/timelapse-{$this->timelapse->id}/camera-{$this->camera->id}-*.jpeg");
+        $pattern = storage_path("app/public/timelapse-{$this->timelapse->id}/camera-{$this->camera->id}-{$this->day->format('Y-m-d')}-*.jpeg");
 
         shell_exec("ffmpeg -framerate {$this->framerate} -pattern_type glob -i \"{$pattern}\" {$output} 2>&1");
 
-        $media = $this->timelapse
+        $this->timelapse
             ->addMedia($output)
             ->usingName($this->getFilename())
             ->usingFileName($this->getFilename())
@@ -49,7 +52,7 @@ class GenerateVideo implements ShouldQueue
 
     protected function getFilename(): string
     {
-        $formattedDate = now()->format('Y-m-d-His');
+        $formattedDate = $this->day->format('Y-m-d-His');
 
         return "{$this->camera->name} ({$formattedDate}).mp4";
     }
