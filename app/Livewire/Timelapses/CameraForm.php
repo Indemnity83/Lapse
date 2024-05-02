@@ -50,12 +50,15 @@ class CameraForm extends Component
 
     public function renderVideo()
     {
-        // TODO: Validate inputs
+        $this->validate([
+            'framerate' => ['required', 'integer', 'min:1', 'max:60'],
+            'date' => ['required', 'date', 'before_or_equal:' . today()->format('Y-m-d')]
+        ]);
+
+        $camera = Camera::findOrFail($this->videoCameraId);
 
         // TODO: let user know things are working, cache some key for being rendered
         //       that will be cleared when the job is done
-        $camera = Camera::findOrFail($this->videoCameraId);
-
         GenerateVideo::dispatch(
             $this->timelapse,
             $camera,
