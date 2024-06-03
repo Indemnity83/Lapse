@@ -8,6 +8,7 @@ use App\Models\Timelapse;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Arr;
@@ -32,12 +33,21 @@ class CaptureSnapshot implements ShouldQueue
      */
     public function handle(): void
     {
-        $this->camera
-            ->addMediaFromUrl($this->camera->url)
-            ->usingName($this->getFilename())
-            ->usingFileName($this->getFilename())
-            ->withCustomProperties(['timelapse_id' => $this->timelapse->id])
-            ->toMediaCollection(config('media.snapshots'));
+        try {
+            $this->camera
+                ->addMediaFromUrl($this->camera->url)
+                ->usingName($this->getFilename())
+                ->usingFileName($this->getFilename())
+                ->withCustomProperties(['timelapse_id' => $this->timelapse->id])
+                ->toMediaCollection(config('media.snapshots'));
+        } catch (FileCannotBeAdded $e) {
+            $this->camera
+                ->addMedia(UploadedFile::fake()->image('missing', 240, 135))
+                ->usingName($this->getFilename())
+                ->usingFileName($this->getFilename())
+                ->withCustomProperties(['timelapse_id' => $this->timelapse->id, 'error' => $e->getMessage()])
+                ->toMediaCollection(config('media.snapshots'));
+        }
     }
 
     protected function getFilename(): string
