@@ -57,7 +57,7 @@ class FillTimelapseCommand extends Command implements PromptsForMissingInput
                             ->addMedia(UploadedFile::fake()->image('missing', 240, 135))
                             ->usingName($filename)
                             ->usingFileName($filename)
-                            ->withCustomProperties(['timelapse_id' => $timelapse->id])
+                            ->withCustomProperties(['timelapse_id' => $timelapse->id, 'error' => 'Missing snapshot'])
                             ->toMediaCollection(config('media.snapshots'))
                             ->save();
 
