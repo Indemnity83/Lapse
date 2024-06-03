@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Symfony\Component\Console\Helper\ProgressBar;
+
 use function Laravel\Prompts\search;
 
 class FillTimelapseCommand extends Command implements PromptsForMissingInput
@@ -21,13 +22,15 @@ class FillTimelapseCommand extends Command implements PromptsForMissingInput
     {
         $timelapse = Timelapse::find($this->argument('timelapse'));
 
-        if(is_null($timelapse)) {
-            $this->error("Timelapse not found");
+        if (is_null($timelapse)) {
+            $this->error('Timelapse not found');
+
             return;
         }
 
-        if(is_null($timelapse->last_snapshot_at)) {
-            $this->error("Timelapse has no snapshots");
+        if (is_null($timelapse->last_snapshot_at)) {
+            $this->error('Timelapse has no snapshots');
+
             return;
         }
 
@@ -39,14 +42,14 @@ class FillTimelapseCommand extends Command implements PromptsForMissingInput
             ->get();
 
         $intervals = $snapshots
-            ->groupBy(fn($snapshot) => substr($snapshot->name, -22, -7));
+            ->groupBy(fn ($snapshot) => substr($snapshot->name, -22, -7));
 
-        $this->withProgressBar($intervals->count() * $timelapse->cameras->count(), function(ProgressBar $bar) use ($timelapse, $intervals) {
+        $this->withProgressBar($intervals->count() * $timelapse->cameras->count(), function (ProgressBar $bar) use ($timelapse, $intervals) {
             $count = 0;
             foreach ($intervals as $interval => $snapshots) {
                 foreach ($timelapse->cameras as $camera) {
 
-                    if (!in_array($camera->id, Arr::pluck($snapshots, 'model_id'))) {
+                    if (! in_array($camera->id, Arr::pluck($snapshots, 'model_id'))) {
                         $filename = "camera-{$camera->id}-{$interval}30.jpeg";
 
                         // Add frame to media collection
