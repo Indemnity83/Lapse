@@ -28,7 +28,7 @@ class FillTimelapseCommand extends Command implements PromptsForMissingInput
             return;
         }
 
-        if (is_null($timelapse->last_snapshot_at)) {
+        if ($timelapse->snapshots->count() == 0) {
             $this->error('Timelapse has no snapshots');
 
             return;
