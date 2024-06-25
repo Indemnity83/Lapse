@@ -23,8 +23,7 @@ class CaptureSnapshot implements ShouldQueue
     public function __construct(
         public Camera $camera,
         public Timelapse $timelapse
-    ) {
-    }
+    ) {}
 
     /**
      * @throws FileCannotBeAdded
