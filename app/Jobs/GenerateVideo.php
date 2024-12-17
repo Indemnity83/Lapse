@@ -24,8 +24,7 @@ class GenerateVideo implements ShouldQueue
         public Timelapse $timelapse,
         public Camera $camera,
         public int $framerate = 4
-    ) {
-    }
+    ) {}
 
     /**
      * @throws FileCannotBeAdded
